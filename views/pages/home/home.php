@@ -14,13 +14,13 @@ Home Content
     Home Promotions
     ======================================-->
 
-        <?php include "modules/promotionsHome.php"; ?>
+        <?php //include "modules/promotionsHome.php"; ?>
 
     <!--=====================================
     Home Deal Hot Today
     ======================================-->
 
-        <?php include "modules/hotTodayHome.php"; ?>
+        <?php //include "modules/hotTodayHome.php"; ?>
 
     <!--=====================================
     Top Categoríes

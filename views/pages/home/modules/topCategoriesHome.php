@@ -1,5 +1,5 @@
 <?php
-$url = CurlController::api() . "subcategories?orderBy=views_subcategory&orderMode=DESC&startAt=0&endAt=6&select=url_subcategory,image_subcategory,name_subcategory";
+$url = CurlController::api() . "subcategories?linkTo=show_subcategory&equalTo=show&orderBy=views_subcategory&orderMode=DESC&startAt=0&endAt=6&select=url_subcategory,image_subcategory,name_subcategory";
 $method = "GET";
 $field = array();
 $header = array();
@@ -62,7 +62,7 @@ $bestSubcategory = CurlController::request($url, $method, $field, $header)->resu
         </div>
     </div>
 </div>
-<div class="ps-top-categories preloadFalse">
+<div class="mt-5 ps-top-categories preloadFalse">
 
     <div class="container">
 

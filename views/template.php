@@ -401,7 +401,7 @@ if($totalPro->status == 200){
 	Banner Promotion 
 	======================================-->
 
-    <?php include "modules/banerModule.php"; ?>
+    <?php //include "modules/banerModule.php"; ?>
 
     <!--=====================================
 	Header

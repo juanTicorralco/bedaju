@@ -48,8 +48,8 @@ Header TOP
 
             <div class="header__right">
                 <ul class="header__top-links">
-                    <li><a href="/become-vendor">Sell on MarketPlace</a></li>
-                    <li><a href="/store-list">Store List</a></li>
+                    <li><a href="/become-vendor">Conocenos</a></li>
+                    <!-- <li><a href="/store-list">Store List</a></li> -->
                     <li><i class="icon-telephone"></i> Hotline:<strong> 1-800-234-5678</strong></li>
                     <!-- <li>
                         <div class="ps-dropdown language"><a href="#"><img src="img/template/en.png" alt="">English</a>
@@ -99,8 +99,8 @@ Header Content
 
                             <?php foreach ($menuCategories as $key => $value) : ?>
                                 <li class="menu-item-has-children has-mega-menu">
-                                    <a href="<?php echo $path . $value->url_category; ?> "><i class="<?php echo $value->icon_category; ?> "></i>
-                                        <?php echo $value->name_category; ?> </a>
+                                    <a href="<?php echo $path . $value->url_category; ?>" class="justify-content-center"><i class="<?php echo $value->icon_category; ?>"></i>
+                                    <?php echo $value->name_category; ?> </a>
                                     <div class="mega-menu">
 
                                         <?php $title_list = json_decode($value->title_list_category); ?>
@@ -110,7 +110,7 @@ Header Content
                                                 <ul class="mega-menu__list">
 
                                                     <?php
-                                                    $url = CurlController::api() . "subcategories?linkTo=title_list_subcategory&equalTo=" . rawurlencode($value) . "&select=url_subcategory,name_subcategory";
+                                                    $url = CurlController::api() . "subcategories?linkTo=title_list_subcategory,show_subcategory&equalTo=" . rawurlencode($value) . ",show&select=url_subcategory,name_subcategory";
                                                     $method = "GET";
                                                     $field = array();
                                                     $header = array();

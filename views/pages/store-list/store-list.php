@@ -17,11 +17,11 @@
     if(isset($urlParams[2])){
         if(is_string($urlParams[2])){
             if($urlParams[2]=="new"){
-                $orderBy="id_store";
+                $orderBy="id_worker";
                 $orderMode="DESC";
             }
             else if($urlParams[2]=="latets"){
-                $orderBy="id_store";
+                $orderBy="id_worker";
                 $orderMode="ASC";
             }else{
                 echo '<script> 
@@ -34,13 +34,13 @@
                 </script>';
         }
     }else{
-        $orderBy="id_store";
+        $orderBy="id_worker";
         $orderMode="DESC";
     }
 
     $endAt = 6;
-    $select = "cover_store,logo_store,name_store,email_store,country_store,city_store,address_store,phone_store,socialnetwork_store,id_store,url_store";
-    $url = CurlController::api()."stores?orderBy=".$orderBy."&orderMode=".$orderMode."&startAt=".$starAt."&endAt=".$endAt."&select=".$select;
+    $select = "cover_worker,logo_worker,email_worker,country_worker,city_worker,address_worker,phone_worker,socialnetwork_worker,id_worker,url_worker";
+    $url = CurlController::api()."workers?orderBy=".$orderBy."&orderMode=".$orderMode."&startAt=".$starAt."&endAt=".$endAt."&select=".$select;
     $method = "GET";
     $fields = array();
     $headers = array();
@@ -95,7 +95,7 @@ Store List
 
                     <?php if($storesResult2->status == 200): ?>
                     <?php 
-                        $url = CurlController::api()."stores?select=id_store";
+                        $url = CurlController::api()."workers?select=id_worker";
                         $totalStores = CurlController::request($url,$method,$fields,$headers)->total;
                     ?>
 
@@ -139,25 +139,25 @@ Store List
 
                                 <article class="ps-block--store">
 
-                                    <div class="ps-block__thumbnail bg--cover" style="background: url(img/stores/<?php echo $value->url_store; ?>/<?php echo $value->cover_store; ?>);"></div>
+                                    <div class="ps-block__thumbnail bg--cover" style="background: url(img/stores/<?php echo $value->url_worker; ?>/<?php echo $value->cover_worker; ?>);"></div>
 
                                     <div class="ps-block__content">
 
                                         <div class="ps-block__author">
 
-                                            <a class="ps-block__user" href="<?php echo TemplateController::path().$value->url_store; ?>">
+                                            <a class="ps-block__user" href="<?php echo TemplateController::path().$value->url_worker; ?>">
 
-                                                <img src="img/stores/<?php echo $value->url_store; ?>/<?php echo $value->logo_store; ?>" alt="img/stores/<?php echo $value->url_store; ?>/<?php echo $value->logo_store; ?>"></a><a class="ps-btn" href="<?php echo TemplateController::path().$value->url_store; ?>">Visit Store</a>
+                                                <img src="img/stores/<?php echo $value->url_worker; ?>/<?php echo $value->logo_worker; ?>" alt="<?php echo $value->url_worker; ?>"></a><a class="ps-btn" href="<?php echo TemplateController::path().$value->url_worker; ?>">Visit Store</a>
 
                                         </div>
 
-                                        <h4><?php echo $value->name_store; ?></h4>
+                                        <h4>seture</h4>
 
                                         <div class="br-wrapper br-theme-fontawesome-stars">
 
                                             <?php
                                                $select = "reviews_product";
-                                               $url = CurlController::api()."products?linkTo=id_store_product&equalTo=".$value->id_store."&select=".$select;
+                                               $url = CurlController::api()."jobs?linkTo=id_worker_job&equalTo=".$value->id_worker."&select=".$select;
                                                $dataReview = CurlController::request($url,$method,$headers,$fields);
                                                $reviews = 0;
                                                $totalReviews = 0;
@@ -200,27 +200,27 @@ Store List
 
                                         </div>
 
-                                        <p><?php echo $value->country_store." | ".$value->city_store." | ".$value->address_store ; ?></p>
+                                        <p><?php echo $value->country_worker." | ".$value->city_worker." | ".$value->address_worker ; ?></p>
 
                                         <ul class="ps-block__contact">
 
                                             <li>
                                                 <i class="icon-envelope"></i>
-                                                <a href="mailto:<?php echo $value->email_store; ?>"><?php echo $value->email_store; ?></a>
+                                                <a href="mailto:<?php echo $value->email_worker; ?>"><?php echo $value->email_worker; ?></a>
                                             </li>
 
                                             <li>
-                                                <i class="icon-telephone"></i> (+<?php echo explode("_", $value->phone_store)[0]; ?>) <?php echo explode("_", $value->phone_store)[1]; ?>
+                                                <i class="icon-telephone"></i> (+<?php echo explode("_", $value->phone_worker)[0]; ?>) <?php echo explode("_", $value->phone_worker)[1]; ?>
                                             </li>
 
                                         </ul>
 
-                                        <?php if($value->socialnetwork_store != null): ?>
+                                        <?php if($value->socialnetwork_worker != null): ?>
                                             <figure>
 
                                                 <ul class="ps-list--social-color">
 
-                                                    <?php foreach(json_decode( $value->socialnetwork_store, true) as $index => $item): ?>
+                                                    <?php foreach(json_decode( $value->socialnetwork_worker, true) as $index => $item): ?>
                                                         <li>
                                                             <a target="_blank" class="<?php  echo array_keys($item)[0]; ?>" href="<?php  echo $item[array_keys($item)[0]]; ?>">
                                                                 <i class="fab fa-<?php  echo array_keys($item)[0]; ?>"></i></a>

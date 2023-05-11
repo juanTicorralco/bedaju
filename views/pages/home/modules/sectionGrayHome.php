@@ -1,5 +1,5 @@
 <?php
-$url = CurlController::api() . "categories?orderBy=views_category&orderMode=DESC&startAt=0&endAt=6&select=name_category,id_category,url_category";
+$url = CurlController::api() . "categories?orderBy=views_category&orderMode=DESC&startAt=0&endAt=5&select=name_category,id_category,url_category";
 $method = "GET";
 $field = array();
 $header = array();
@@ -56,10 +56,10 @@ $bestcategory = CurlController::request($url, $method, $field, $header)->result;
 
                     <h3><?php echo $value->name_category; ?></h3>
 
-                    <ul>
+                    <ul class="mb-5">
 
                         <?php
-                        $url = CurlController::api() . "subcategories?linkTo=id_category_subcategory&equalTo=" . $value->id_category . "&select=url_subcategory,name_subcategory";
+                        $url = CurlController::api() . "subcategories?linkTo=id_category_subcategory,show_subcategory&equalTo=" . $value->id_category . ",show&select=url_subcategory,name_subcategory";
                         $method = "GET";
                         $field = array();
                         $header = array();
@@ -80,27 +80,38 @@ $bestcategory = CurlController::request($url, $method, $field, $header)->result;
                 Vertical Slider Category
                 ======================================-->
                 <?php
-                $url = CurlController::api() . "products?linkTo=id_category_product&equalTo=" . $value->id_category . "&orderBy=views_product&orderMode=DESC&startAt=0&endAt=6&select=url_product,vertical_slider_product,name_product,image_product,offer_product,reviews_product,stock_product,price_product";
+                $url = CurlController::api()."relations?rel=promotions,workers&type=promotion,worker&linkTo=id_category_promotion,show_promotion&equalTo=" . $value->id_category . ",show&orderBy=views_worker&orderMode=DESC&startAt=0&endAt=6&select=vertical_slider_promotion,id_worker,logo_worker,url_worker,show_worker";
                 $method = "GET";
                 $field = array();
                 $header = array();
 
                 $bestProduct = CurlController::request($url, $method, $field, $header)->result;
+
+
+                $url = CurlController::api()."relations?rel=workers,users&type=worker,user&linkTo=id_category_worker,show_worker&equalTo=" . $value->id_category . ",show&orderBy=views_worker&orderMode=DESC&startAt=0&endAt=6&select=id_worker,id_user,picture_user,url_worker,show_worker,displayname_user,username_user,reviews_worker,price_worker,country_worker,city_worker,address_worker";
+                $method = "GET";
+                $field = array();
+                $header = array();
+
+                $bestProduct2 = CurlController::request($url, $method, $field, $header)->result;
+
+
                 ?>
+                <?php if(count($bestProduct)>1): ?>
                 <div class="ps-block__slider">
 
                     <div class="ps-carousel--product-box owl-slider" data-owl-auto="true" data-owl-loop="true" data-owl-speed="7000" data-owl-gap="0" data-owl-nav="true" data-owl-dots="true" data-owl-item="1" data-owl-item-xs="1" data-owl-item-sm="1" data-owl-item-md="1" data-owl-item-lg="1" data-owl-duration="500" data-owl-mousedrag="off">
 
-                        <?php foreach ($bestProduct as $key3 => $value3) :
-                        ?>
-                            <a href="<?php echo $path . $value3->url_product; ?>">
-                                <img src="img/products/<?php echo $value->url_category; ?>/vertical/<?php echo $value3->vertical_slider_product; ?>" alt="<?php echo $value3->name_product; ?>">
+                        <?php foreach ($bestProduct as $key3 => $value3) : ?>
+                            <a href="<?php echo $path . $value3->url_worker; ?>">
+                                <img src="img/promotions/<?php echo $value3->id_worker; ?>-<?php echo $value3->url_worker; ?>/vertical/<?php echo $value3->vertical_slider_promotion; ?>" alt="<?php echo $value3->url_worker; ?>">
                             </a>
                         <?php endforeach; ?>
 
                     </div>
 
                 </div>
+                <?php endif; ?>
 
                 <!--=====================================
                 Block Product Box
@@ -112,22 +123,21 @@ $bestcategory = CurlController::request($url, $method, $field, $header)->result;
                     Product Simple
                     ======================================-->
 
-                    <?php foreach ($bestProduct as $key3 => $value3) : ?>
+                    <?php foreach ($bestProduct2 as $key3 => $value3) : ?>
                         <div class="ps-product ps-product--simple">
-
                             <div class="ps-product__thumbnail">
 
-                                <a href="<?php echo $path . $value3->url_product; ?>">
-                                    <img src="img/products/<?php echo $value->url_category; ?>/<?php echo $value3->image_product; ?>" alt="<?php echo $value3->name_product; ?>">
+                                <a href="<?php echo $path . $value3->url_worker; ?>">
+                                    <img class="rounded-circle" src="img/users/<?php echo $value3->id_user; ?>-<?php echo $value3->username_user; ?>/<?php echo $value3->picture_user; ?>" alt="<?php echo $value3->url_worker; ?>">
                                 </a>
 
-                                <?php if ($value3->stock_product != 0) : ?>
-                                    <?php if ($value3->offer_product != null) : ?>
+                                <?php if ($value3->show_worker == "show") : ?>
+                                    <?php //if ($value3->offer_product != null) : ?>
 
-                                        <div class="ps-product__badge">-<?php echo TemplateController::percentOffer($value3->price_product, json_decode($value3->offer_product, true)[1], json_decode($value3->offer_product, true)[0]); ?>%</div>
-                                    <?php endif; ?>
+                                        <div class="ps-product__badge">Disponible</div>
+                                    <?php //endif; ?>
                                 <?php else : ?>
-                                    <div class="ps-product__badge out-stock">Fuera de Stock</div>
+                                    <div class="ps-product__badge out-stock">No disponible</div>
                                 <?php endif; ?>
 
                             </div>
@@ -136,11 +146,11 @@ $bestcategory = CurlController::request($url, $method, $field, $header)->result;
 
                                 <div class="ps-product__content" data-mh="clothing">
 
-                                    <a class="ps-product__title" href="<?php echo $path . $value3->url_product; ?>"><?php echo $value3->name_product; ?></a>
+                                    <a class="ps-product__title" href="<?php echo $path . $value3->url_worker; ?>"><?php echo $value3->displayname_user; ?></a>
 
                                     <div class="ps-product__rating">
 
-                                        <?php $reviews = TemplateController::calificationStars(json_decode($value3->reviews_product, true));
+                                        <?php $reviews = TemplateController::calificationStars(json_decode($value3->reviews_worker, true));
                                         ?>
 
                                         <select class="ps-rating" data-read-only="true">
@@ -165,19 +175,21 @@ $bestcategory = CurlController::request($url, $method, $field, $header)->result;
                                         </select>
 
                                         <span>(<?php
-                                                if ($value3->reviews_product != null) {
-                                                    echo count(json_decode($value3->reviews_product, true));
+                                                if ($value3->reviews_worker != null) {
+                                                    echo count(json_decode($value3->reviews_worker, true));
                                                 } else {
                                                     echo "0";
                                                 }
-                                                ?> reseñas)</span>
-
+                                                ?> reseñas)
+                                        </span>
                                     </div>
-                                    <?php if ($value3->offer_product != null) : ?>
-                                        <p class="ps-product__price sale">$<?php echo TemplateController::offerPrice($value3->price_product, json_decode($value3->offer_product, true)[1], json_decode($value3->offer_product, true)[0]); ?> <del>$<?php echo $value3->price_product; ?></del></p>
-                                    <?php else : ?>
-                                        <p class="ps-product__price">$<?php echo $value3->price_product; ?></p>
-                                    <?php endif; ?>
+                                    <?php //if ($value3->offer_product != null) : ?>
+                                        <!-- <p class="ps-product__price sale">$<?php //echo TemplateController::offerPrice($value3->price_product, json_decode($value3->offer_product, true)[1], json_decode($value3->offer_product, true)[0]); ?> <del>$<?php echo $value3->price_product; ?></del></p> -->
+                                    <?php //else : ?>
+                                        <!-- <p class="ps-product__price">$<?php //echo $value3->price_product; ?></p> -->
+                                    <?php //endif; ?>
+                                    <p class="ps-product__price">Cotizaciones - <span class="text-success">$<?php echo $value3->price_worker; ?></span></p>
+                                    <p><?php echo $value3->country_worker." | ".$value3->city_worker; ?></p>
                                 </div>
 
                             </div>
