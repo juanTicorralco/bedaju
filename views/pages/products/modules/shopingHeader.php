@@ -1,8 +1,8 @@
 <div class="ps-shopping__header">
 
     <p>Total Procuctos: <strong><?php 
-    if(isset($totalProductes) && $totalProductes != null){
-        echo $totalProductes; 
+    if(isset($totaljobes) && $totaljobes != null){
+        echo $totaljobes; 
     }else{
         echo 0;
     }

@@ -106,26 +106,27 @@
 
                         <div class="ps-product__thumbnail">
 
-                            <a href="<?php echo $path . $value->url_product; ?>">
-                                <img src="img/products/<?php echo $value->url_category; ?>/<?php echo $value->image_product; ?>" alt="<?php echo $value->name_product; ?>">
+                            <a href="<?php echo $path . $value->url_worker; ?>">
+                            <img class="rounded-circle" src="img/users/<?php echo $value->id_user; ?>-<?php echo $value->username_user; ?>/<?php echo $value->picture_user; ?>" alt="<?php echo $value->url_worker; ?>">
                             </a>
 
-                            <?php if ($value->stock_product != 0) : ?>
-                                <?php if ($value->offer_product != null) : ?>
+                            <?php //if ($value->stock_job != 0) : ?>
+                                <?php //if ($value->offer_job != null) : ?>
 
-                                    <div class="ps-product__badge">-<?php echo TemplateController::percentOffer($value->price_product, json_decode($value->offer_product, true)[1], json_decode($value->offer_product, true)[0]); ?>%</div>
-                                <?php endif; ?>
-                            <?php else : ?>
-                                <div class="ps-product__badge out-stock">Out Of Stock</div>
-                            <?php endif; ?>
+                                    <!-- <div class="ps-product__badge">-<?php //echo TemplateController::percentOffer($value->price_job, json_decode($value->offer_job, true)[1], json_decode($value->offer_job, true)[0]); ?>%</div> -->
+                                <?php //endif; ?>
+                            <?php //else : ?>
+                                <!-- <div class="ps-product__badge out-stock">Out Of Stock</div> -->
+                            <?php //endif; ?>
+                            <div class="ps-product__badge">Disponible</div>
 
                             <?php
-                            if (in_array($value->url_product, $wishlist)) {
+                            if (in_array($value->url_worker, $wishlist)) {
                                 echo '  <p mb-5></p>  <div class="ps-product__badge bg-danger mt-5 "><i class="fas fa-heart"></i></div>';
                             }
                             ?>
 
-                            <div class="invisibleCorazon <?php echo $value->url_product; ?>">
+                            <div class="invisibleCorazon <?php echo $value->url_worker; ?>">
                             <p mb-5></p>  <div class="ps-product__badge bg-danger mt-5 "><i class="fas fa-heart"></i></div>
                             </div>
 
@@ -134,7 +135,7 @@
                                 <li>
                                     <a
                                     class="btn" 
-                                    onclick="addBagCard('<?php echo $value->url_product; ?>', '<?php echo $value->url_category; ?>', '<?php echo $value->image_product; ?>', '<?php echo $value->name_product; ?>', '<?php echo $value->price_product; ?>', '<?php echo $path ?>', '<?php echo CurlController::api(); ?>', this)"
+                                    onclick="addBagCard('<?php echo $value->url_worker; ?>', '<?php echo $value->url_category; ?>', '<?php echo $value->picture_user; ?>', '<?php echo $value->displayname_user; ?>', '<?php echo $value->price_worker; ?>', '<?php echo $path ?>', '<?php echo CurlController::api(); ?>', this)"
                                     detailSC 
                                     quantitySC
                                     data-toggle="tooltip" data-placement="top" title="Agregar al carrito">
@@ -143,13 +144,13 @@
                                 </li>
 
                                 <li>
-                                    <a href="<?php echo $path . $value->url_product; ?>" data-toggle="tooltip" data-placement="top" title="Quick View">
+                                    <a href="<?php echo $path . $value->url_worker; ?>" data-toggle="tooltip" data-placement="top" title="Quick View">
                                         <i class="icon-eye"></i>
                                     </a>
                                 </li>
 
                                 <li>
-                                <a class="btn" onclick="addWishList('<?php echo $value->url_product; ?>', '<?php echo CurlController::api(); ?>')" data-toggle="tooltip" data-placement="top" title="Lo deseo">
+                                <a class="btn" onclick="addWishList('<?php echo $value->url_worker; ?>', '<?php echo CurlController::api(); ?>')" data-toggle="tooltip" data-placement="top" title="Lo deseo">
                                         <i class="icon-heart"></i>
                                     </a>
                                 </li>
@@ -160,16 +161,14 @@
 
                         <div class="ps-product__container">
 
-                            <a class="ps-product__vendor" href="<?php echo $path . $value->url_store; ?>"><?php echo $value->name_store; ?></a>
-
                             <div class="ps-product__content">
 
-                                <a class="ps-product__title" href="<?php echo $path . $value->url_product; ?>">
-                                    <?php echo $value->name_product; ?></a>
+                                <a class="ps-product__title font-weight-bold" href="<?php echo $path . $value->url_worker; ?>"><?php echo $value->displayname_user; ?></a>
+                                <small class="font-weight-bold"><?php echo $value->name_subcategory; ?></small>
 
                                 <div class="ps-product__rating">
 
-                                    <?php $reviews = TemplateController::calificationStars(json_decode($value->reviews_product, true));?>
+                                    <?php $reviews = TemplateController::calificationStars(json_decode($value->reviews_worker, true));?>
 
                                     <select class="ps-rating" data-read-only="true">
 
@@ -194,8 +193,8 @@
 
                                     <span>
                                         (<?php
-                                            if ($value->reviews_product != null) {
-                                                echo count(json_decode($value->reviews_product, true));
+                                            if ($value->reviews_worker != null) {
+                                                echo count(json_decode($value->reviews_worker, true));
                                             } else {
                                                 echo "0";
                                             }
@@ -205,24 +204,28 @@
 
                                 </div>
 
-                                <?php if ($value->offer_product != null) : ?>
-                                    <p class="ps-product__price sale">$<?php echo TemplateController::offerPrice($value->price_product, json_decode($value->offer_product, true)[1], json_decode($value->offer_product, true)[0]); ?> <del>$<?php echo $value->price_product; ?></del></p>
-                                <?php else : ?>
-                                    <p class="ps-product__price">$<?php echo $value->price_product; ?></p>
-                                <?php endif; ?>
+                                <?php //if ($value->offer_job != null) : ?>
+                                    <!-- <p class="ps-product__price sale">$<?php //echo TemplateController::offerPrice($value->price_job, json_decode($value->offer_job, true)[1], json_decode($value->offer_job, true)[0]); ?> <del>$<?php //echo $value->price_job; ?></del></p> -->
+                                <?php //else : ?>
+                                    <!-- <p class="ps-product__price">$<?php //echo $value->price_job; ?></p> -->
+                                <?php //endif; ?>
+                                <p class="ps-product__price">Cotizaciones: <strong class="text-success">$<?php echo $value->price_worker; ?></strong></p>
+                                <small><?php echo $value->country_worker." | ".$value->city_worker; ?></small>
 
                             </div>
 
                             <div class="ps-product__content hover">
 
-                                <a class="ps-product__title" href="<?php echo $path . $value->url_product; ?>">
-                                    <?php echo $value->name_product; ?></a>
+                                <a class="ps-product__title font-weight-bold" href="<?php echo $path . $value->url_worker; ?>"><?php echo $value->displayname_user; ?></a>
+                                <small class="font-weight-bold"><?php echo $value->name_subcategory; ?></small>
 
-                                <?php if ($value->offer_product != null) : ?>
-                                    <p class="ps-product__price sale">$<?php echo TemplateController::offerPrice($value->price_product, json_decode($value->offer_product, true)[1], json_decode($value->offer_product, true)[0]); ?> <del>$<?php echo $value->price_product; ?></del></p>
-                                <?php else : ?>
-                                    <p class="ps-product__price">$<?php echo $value->price_product; ?></p>
-                                <?php endif; ?>
+                                <?php //if ($value->offer_job != null) : ?>
+                                    <!-- <p class="ps-product__price sale">$<?php //echo TemplateController::offerPrice($value->price_job, json_decode($value->offer_job, true)[1], json_decode($value->offer_job, true)[0]); ?> <del>$<?php //echo $value->price_job; ?></del></p> -->
+                                <?php //else : ?>
+                                    <!-- <p class="ps-product__price">$<?php //echo $value->price_job; ?></p> -->
+                                <?php //endif; ?>
+                                <p class="ps-product__price">Cotizaciones: <strong class="text-success">$<?php echo $value->price_worker; ?></strong></p>
+                                <small><?php echo $value->country_worker." | ".$value->city_worker; ?></small>
 
                             </div>
 

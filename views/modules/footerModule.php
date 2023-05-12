@@ -113,7 +113,7 @@
             <strong> <?php echo $value->name_category;?> </strong>
             <?php
                                     
-            $url = CurlController::api() . "subcategories?linkTo=id_category_subcategory&equalTo=" . rawurlencode($value->id_category)."&select=url_subcategory,name_subcategory";
+            $url = CurlController::api() . "subcategories?linkTo=id_category_subcategory,show_subcategory&equalTo=" . rawurlencode($value->id_category).",show&select=url_subcategory,name_subcategory";
             $method= "GET";
             $field=array();
             $header=array();
@@ -136,28 +136,28 @@
 
     <div class="ps-footer__copyright">
 
-        <p>© 2020 WeSharp. Todos los derechos reservados</p>
+        <p>© 2023 BEDAJU. Todos los derechos reservados</p>
 
         <p>
             <span>Usamos pagos seguros con:</span>
 
-            <a href="#">
+            <a>
                 <img src="img/payment-method/1.jpg" alt="">
             </a>
 
-            <a href="#">
+            <a>
                 <img src="img/payment-method/2.jpg" alt="">
             </a>
 
-            <a href="#">
+            <a>
                 <img src="img/payment-method/3.jpg" alt="">
             </a>
 
-            <a href="#">
+            <a>
                 <img src="img/payment-method/4.jpg" alt="">
             </a>
 
-            <a href="#">
+            <a>
                 <img src="img/payment-method/5.jpg" alt="">
             </a>
 

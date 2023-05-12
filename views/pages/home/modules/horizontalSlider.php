@@ -12,8 +12,8 @@ if($totalpromotions->status == 200){
     $totalpromotions = 0;
 }
 
-$aleatorProduct = rand(0, ($totalpromotions - 5));
-$url = CurlController::api()."relations?rel=promotions,workers&type=promotion,worker&linkTo=show_promotion&equalTo=show&orderBy=Id_promotion&orderMode=ASC&startAt=$aleatorProduct&endAt=5&select=horizontal_slider_promotion,url_worker,id_worker";
+$aleatorPromotion = rand(0, ($totalpromotions - 5));
+$url = CurlController::api()."relations?rel=promotions,workers&type=promotion,worker&linkTo=show_promotion&equalTo=show&orderBy=Id_promotion&orderMode=ASC&startAt=$aleatorPromotion&endAt=5&select=horizontal_slider_promotion,url_worker,id_worker";
 $method = "GET";
 $field = array();
 $header = array();

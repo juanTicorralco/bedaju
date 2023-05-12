@@ -60,14 +60,11 @@ $bestcategory = CurlController::request($url, $method, $field, $header)->result;
 
                         <?php
                         $url = CurlController::api() . "subcategories?linkTo=id_category_subcategory,show_subcategory&equalTo=" . $value->id_category . ",show&select=url_subcategory,name_subcategory";
-                        $method = "GET";
-                        $field = array();
-                        $header = array();
+                        
 
                         $subcategoryAll = CurlController::request($url, $method, $field, $header)->result;
 
-                        foreach ($subcategoryAll as $key2 => $value2) :
-                        ?>
+                        foreach ($subcategoryAll as $key2 => $value2) :?>
                             <li><a href="<?php echo $path . $value2->url_subcategory; ?>"><?php echo $value2->name_subcategory; ?></a></li>
                         <?php endforeach; ?>
                     </ul>
@@ -80,15 +77,18 @@ $bestcategory = CurlController::request($url, $method, $field, $header)->result;
                 Vertical Slider Category
                 ======================================-->
                 <?php
-                $url = CurlController::api()."relations?rel=promotions,workers&type=promotion,worker&linkTo=id_category_promotion,show_promotion&equalTo=" . $value->id_category . ",show&orderBy=views_worker&orderMode=DESC&startAt=0&endAt=6&select=vertical_slider_promotion,id_worker,logo_worker,url_worker,show_worker";
-                $method = "GET";
-                $field = array();
-                $header = array();
+                $url = CurlController::api()."relations?rel=promotions,workers&type=promotion,worker&linkTo=id_category_promotion,show_promotion&equalTo=" . $value->id_category . ",show&select=id_worker";
+                $totalPromotion = CurlController::request($url, $method, $field, $header)->total;
+                if($totalPromotion>5){
+                    $aleatorPromotion = rand(0, ($totalpromotions - 5));
+                }else{
+                    $aleatorPromotion= 0;
+                }
 
+                $url = CurlController::api()."relations?rel=promotions,workers&type=promotion,worker&linkTo=id_category_promotion,show_promotion&equalTo=" . $value->id_category . ",show&orderBy=views_worker&orderMode=DESC&startAt=$aleatorPromotion&endAt=6&select=vertical_slider_promotion,id_worker,url_worker,show_worker";
                 $bestProduct = CurlController::request($url, $method, $field, $header)->result;
 
-
-                $url = CurlController::api()."relations?rel=workers,users&type=worker,user&linkTo=id_category_worker,show_worker&equalTo=" . $value->id_category . ",show&orderBy=views_worker&orderMode=DESC&startAt=0&endAt=6&select=id_worker,id_user,picture_user,url_worker,show_worker,displayname_user,username_user,reviews_worker,price_worker,country_worker,city_worker,address_worker";
+                $url = CurlController::api()."relations?rel=workers,users,subcategories&type=worker,user,subcategory&linkTo=id_category_worker,show_worker&equalTo=" . $value->id_category . ",show&orderBy=views_worker&orderMode=DESC&startAt=0&endAt=6&select=id_worker,id_user,name_subcategory,picture_user,url_worker,show_worker,displayname_user,username_user,reviews_worker,price_worker,country_worker,city_worker,address_worker";
                 $method = "GET";
                 $field = array();
                 $header = array();
@@ -97,6 +97,7 @@ $bestcategory = CurlController::request($url, $method, $field, $header)->result;
 
 
                 ?>
+                <?php if(is_array($bestProduct)): ?>
                 <?php if(count($bestProduct)>1): ?>
                 <div class="ps-block__slider">
 
@@ -112,6 +113,7 @@ $bestcategory = CurlController::request($url, $method, $field, $header)->result;
 
                 </div>
                 <?php endif; ?>
+                <?php endif; ?>
 
                 <!--=====================================
                 Block Product Box
@@ -122,11 +124,9 @@ $bestcategory = CurlController::request($url, $method, $field, $header)->result;
                     <!--=====================================
                     Product Simple
                     ======================================-->
-
                     <?php foreach ($bestProduct2 as $key3 => $value3) : ?>
                         <div class="ps-product ps-product--simple">
                             <div class="ps-product__thumbnail">
-
                                 <a href="<?php echo $path . $value3->url_worker; ?>">
                                     <img class="rounded-circle" src="img/users/<?php echo $value3->id_user; ?>-<?php echo $value3->username_user; ?>/<?php echo $value3->picture_user; ?>" alt="<?php echo $value3->url_worker; ?>">
                                 </a>
@@ -146,8 +146,8 @@ $bestcategory = CurlController::request($url, $method, $field, $header)->result;
 
                                 <div class="ps-product__content" data-mh="clothing">
 
-                                    <a class="ps-product__title" href="<?php echo $path . $value3->url_worker; ?>"><?php echo $value3->displayname_user; ?></a>
-
+                                    <a class="ps-product__title font-weight-bold" href="<?php echo $path . $value3->url_worker; ?>"><?php echo $value3->displayname_user; ?></a>
+                                    <small class="font-weight-bold"><?php echo $value3->name_subcategory; ?></small>
                                     <div class="ps-product__rating">
 
                                         <?php $reviews = TemplateController::calificationStars(json_decode($value3->reviews_worker, true));
@@ -188,8 +188,8 @@ $bestcategory = CurlController::request($url, $method, $field, $header)->result;
                                     <?php //else : ?>
                                         <!-- <p class="ps-product__price">$<?php //echo $value3->price_product; ?></p> -->
                                     <?php //endif; ?>
-                                    <p class="ps-product__price">Cotizaciones - <span class="text-success">$<?php echo $value3->price_worker; ?></span></p>
-                                    <p><?php echo $value3->country_worker." | ".$value3->city_worker; ?></p>
+                                    <!-- <p class="ps-product__price">Cotizaciones - <span class="text-success">$<?php //echo $value3->price_worker; ?></span></p> -->
+                                    <small><?php echo $value3->country_worker." | ".$value3->city_worker; ?></small>
                                 </div>
 
                             </div>

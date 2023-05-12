@@ -33,7 +33,7 @@ if (!empty($urlParams[0])) {
 
         if ($urlSubcategories->status == 404) {
             /* filter porducts whidt URL paremers */
-            $url = CurlController::api() . "relations?rel=products,categories&type=product,category&linkTo=url_product&equalTo=" . $urlParams[0] . "&select=url_product,name_product,url_category,image_product,tags_product,summary_product";
+            $url = CurlController::api() . "relations?rel=jobs,categories&type=job,category&linkTo=url_job&equalTo=" . $urlParams[0] . "&select=url_job,name_job,url_job,image_job,tags_job,summary_job";
             $method = "GET";
             $field = array();
             $header = array();
@@ -43,7 +43,7 @@ if (!empty($urlParams[0])) {
             if ($urlProduct->status == 404) {
                 
                  /* filter porducts whidt URL paremers */
-                $url = CurlController::api() . "stores?linkTo=url_store&equalTo=" . $urlParams[0] . "&select=id_store";
+                $url = CurlController::api() . "workers?linkTo=url_worker&equalTo=" . $urlParams[0] . "&select=id_worker";
                 $method = "GET";
                 $field = array();
                 $header = array();
@@ -68,45 +68,45 @@ if (!empty($urlParams[0])) {
                     if (isset($urlParams[2])) {
                         if (is_string($urlParams[2])) {
                             if ($urlParams[2] == "new") {
-                                $orderBy = "id_product";
+                                $orderBy = "id_job";
                                 $orderMode = "DESC";
                             } else if ($urlParams[2] == "latets") {
-                                $orderBy = "id_product";
+                                $orderBy = "id_job";
                                 $orderMode = "ASC";
                             } else if ($urlParams[2] == "low") {
-                                $orderBy = "price_product";
+                                $orderBy = "price_job";
                                 $orderMode = "ASC";
                             } else if ($urlParams[2] == "higt") {
-                                $orderBy = "price_product";
+                                $orderBy = "price_job";
                                 $orderMode = "DESC";
                             } else {
-                                $orderBy = "id_product";
+                                $orderBy = "id_job";
                                 $orderMode = "DESC";
                             }
                         } else {
-                            $orderBy = "id_product";
+                            $orderBy = "id_job";
                             $orderMode = "DESC";
                         }
                     } else {
-                        $orderBy = "id_product";
+                        $orderBy = "id_job";
                         $orderMode = "DESC";
                     }
 
-                    $linkTo = ["name_product", "title_list_product", "tags_product", "summary_product", "name_store"];
-                    $selecte = "url_product,url_category,image_product,name_product,stock_product,offer_product,price_product,url_store,name_store,reviews_product,views_category,name_category,id_category,views_subcategory,name_subcategory,id_subcategory,summary_product";
+                    $linkTo = ["name_job", "title_list_job", "tags_job", "summary_job",];
+                    $selecte = "url_job,url_category,image_job,name_job,stock_job,offer_job,price_job,url_worker,reviews_job,views_category,name_category,id_category,views_subcategory,name_subcategory,id_subcategory,summary_job";
 
                     foreach ($linkTo as $key => $value) {
 
                         /* filtrar por busqueda con el parametro url de busqueda*/
-                        $url = CurlController::api() . "relations?rel=products,categories,subcategories,stores&type=product,category,subcategory,store&linkTo=" . $value . ",approval_product,state_product&search=" . $urlParams[0] . ",approved,show&orderBy=" . $orderBy . "&orderMode=" . $orderMode . "&startAt=" . $starAt . "&endAt=24&select=" . $selecte;
+                        $url = CurlController::api() . "relations?rel=jobs,categories,subcategories,workers&type=job,category,subcategory,worker&linkTo=" . $value . ",approval_job,state_job&search=" . $urlParams[0] . ",approved,show&orderBy=" . $orderBy . "&orderMode=" . $orderMode . "&startAt=" . $starAt . "&endAt=24&select=" . $selecte;
                         $method = "GET";
                         $field = array();
                         $header = array();
 
                         $urlSearch = CurlController::request($url, $method, $field, $header);
                         if ($urlSearch->status == 200) {
-                            $select = "id_product";
-                            $url = CurlController::api() . "relations?rel=products,categories,subcategories,stores&type=product,category,subcategory,store&linkTo=" . $value . ",approval_product,state_product&search=" . $urlParams[0] . ",approved,show&&select=" . $select;
+                            $select = "id_job";
+                            $url = CurlController::api() . "relations?rel=jobs,categories,subcategories,workers&type=job,category,subcategory,worker&linkTo=" . $value . ",approval_job,state_job&search=" . $urlParams[0] . ",approved,show&&select=" . $select;
                             
                             $totalSearch =  CurlController::request($url, $method, $field, $header)->total;
                             break;
@@ -122,7 +122,7 @@ if (!empty($urlParams[0])) {
 $path = TemplateController::path();
 
 /* BRING THE TOTAL OF PRODUCT */
-$url = CurlController::api() . "products?select=id_product";
+$url = CurlController::api() . "jobs?select=id_job";
 $method = "GET";
 $field = array();
 $header = array();
