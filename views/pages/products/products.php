@@ -17,19 +17,19 @@
     if(isset($urlParams[2])){
         if(is_string($urlParams[2])){
             if($urlParams[2]=="new"){
-                $orderBy="id_job";
+                $orderBy="id_worker";
                 $orderMode="DESC";
             }
             else if($urlParams[2]=="latets"){
-                $orderBy="id_job";
+                $orderBy="id_worker";
                 $orderMode="ASC";
             }
             else if($urlParams[2]=="low"){
-                $orderBy="price_job";
+                $orderBy="price_worker";
                 $orderMode="ASC";
             }
             else if($urlParams[2]=="higt"){
-                $orderBy="price_job";
+                $orderBy="price_worker";
                 $orderMode="DESC";
             }else{
                 echo '<script> 
@@ -42,11 +42,11 @@
         </script>';
         }
     }else{
-        $orderBy="id_job";
+        $orderBy="id_worker";
         $orderMode="DESC";
     }
 
-    /* Bring the jobs of categories */
+    /* Bring the workers of categories */
     $url=CurlController::api()."relations?rel=workers,categories&type=worker,category&linkTo=url_category,show_worker&equalTo=".$urlParams[0].",show&orderBy=id_category&startAt=0&endAt=7&select=views_category,id_category,name_category";
     $method="GET";
     $field=array();
@@ -55,14 +55,14 @@
     $jobRelation= CurlController::request($url, $method, $field, $header)->result;
 
     if( $jobRelation =="no found"){
-        /* Bring the jobs of subcategories */
-        $url=CurlController::api()."relations?rel=jobs,subcategories,worker&type=job,subcategory,store&linkTo=url_subcategory,approval_job,state_job&equalTo=".$urlParams[0].",approved,show&orderBy=id_category&startAt=0&endAt=7&select=views_subcategory,id_subcategory,name_subcategory";
+        /* Bring the workers of subcategories */
+        $url=CurlController::api()."relations?rel=workers,subcategories&type=worker,subcategory&linkTo=url_subcategory,show_worker&equalTo=".$urlParams[0].",show&orderBy=id_category&startAt=0&endAt=7&select=views_subcategory,id_subcategory,name_subcategory";
         $jobRelation= CurlController::request($url, $method, $field, $header)->result;
 
         if( $jobRelation != "no found"){
 
         /* Bring all subcategories */
-        $url2=CurlController::api()."relations?rel=jobs,subcategories,worker&type=job,subcategory,store&linkTo=url_subcategory,approval_job,state_job&equalTo=".$urlParams[0].",approved,show&select=id_subcategory";
+        $url2=CurlController::api()."relations?rel=workers,subcategories&type=worker,subcategory&linkTo=url_subcategory,show_worker&equalTo=".$urlParams[0].",show&select=id_subcategory";
         $totalProduc = CurlController::request($url2, $method, $field, $header);
         if($totalProduc->status == 200){
             $totaljobes = $totalProduc->total;
@@ -70,7 +70,7 @@
             $totaljobes = 0;
         }
 
-         /* actualizar las vistas de subcategorias */
+        /* actualizar las vistas de subcategorias */
          $views= $jobRelation[0]->views_subcategory+1;
 
          $url123= CurlController::api()."subcategories?id=".$jobRelation[0]->id_subcategory."&nameId=id_subcategory&token=no&except=views_subcategory";
@@ -107,8 +107,8 @@
     $bestSalesItem= CurlController::request($url2, $method, $field, $header)->result;
 
     if( $bestSalesItem =="no found"){
-        /* Bring the jobs of subcategories */
-        $url2=CurlController::api()."relations?rel=jobs,categories,subcategories,worker&type=job,category,subcategory,store&linkTo=url_subcategory,approval_job,state_job&equalTo=".$urlParams[0].",approved,show&orderBy=sales_job&orderMode=DESC&startAt=0&endAt=7&select=url_job,url_category,image_job,name_job,stock_job,offer_job,price_job,url_store,name_store,reviews_job";
+        /* Bring the workers of subcategories */
+        $url2=CurlController::api()."relations?rel=workers,users,categories,subcategories&type=worker,user,category,subcategory&linkTo=url_subcategory,show_worker&equalTo=".$urlParams[0].",show&orderBy=hired_worker&orderMode=DESC&startAt=0&endAt=7&select=url_worker,url_category,picture_user,displayname_user,show_worker,price_worker,reviews_worker,id_user,username_user,name_subcategory,country_worker,city_worker";
         $bestSalesItem= CurlController::request($url2, $method, $field, $header)->result;
     }
 
@@ -117,12 +117,10 @@
     $moreViewsItem= CurlController::request($url3, $method, $field, $header)->result;
 
     if( $moreViewsItem =="no found"){
-        /* Bring the jobs of subcategories */
-        $url3=CurlController::api()."relations?rel=jobs,categories,subcategories,worker&type=job,category,subcategory,store&linkTo=url_subcategory,approval_job,state_job&equalTo=".$urlParams[0].",approved,show&orderBy=views_job&orderMode=DESC&startAt=0&endAt=7&select=url_job,url_category,image_job,name_job,stock_job,offer_job,price_job,url_store,name_store,reviews_job";
+        /* Bring the workers of subcategories */
+        $url3=CurlController::api()."relations?rel=workers,users,categories,subcategories&type=worker,user,category,subcategory&linkTo=url_subcategory,show_worker&equalTo=".$urlParams[0].",show&orderBy=views_worker&orderMode=DESC&startAt=0&endAt=7&select=url_worker,url_category,picture_user,displayname_user,show_worker,price_worker,reviews_worker,id_user,username_user,name_subcategory,country_worker,city_worker";
         $moreViewsItem= CurlController::request($url3, $method, $field, $header)->result;
     }
-    // echo "<pre>"; print_r($moreViewsItem); echo "</pre>";
-    // return;
 ?>
 
 <!--=====================================
@@ -160,7 +158,7 @@ Categories Content
                <?php include "modules/recomended.php"; ?>
 
                 <!--=====================================
-                jobs found
+                workers found
                 ======================================--> 
 
                 <div id="showCase" class="ps-shopping ps-tab-root">

@@ -33,16 +33,18 @@ if (!empty($urlParams[0])) {
 
         if ($urlSubcategories->status == 404) {
             /* filter porducts whidt URL paremers */
+            // /////////////////////////////////////////////////////////////////////////Esta falta es para los productos o jobs
             $url = CurlController::api() . "relations?rel=jobs,categories&type=job,category&linkTo=url_job&equalTo=" . $urlParams[0] . "&select=url_job,name_job,url_job,image_job,tags_job,summary_job";
             $method = "GET";
             $field = array();
             $header = array();
 
             $urlProduct = CurlController::request($url, $method, $field, $header);
-
+    
             if ($urlProduct->status == 404) {
                 
                  /* filter porducts whidt URL paremers */
+                 ////////////////////////////////////////////////////////Esta es para las tiendas
                 $url = CurlController::api() . "workers?linkTo=url_worker&equalTo=" . $urlParams[0] . "&select=id_worker";
                 $method = "GET";
                 $field = array();
@@ -68,45 +70,46 @@ if (!empty($urlParams[0])) {
                     if (isset($urlParams[2])) {
                         if (is_string($urlParams[2])) {
                             if ($urlParams[2] == "new") {
-                                $orderBy = "id_job";
+                                $orderBy = "id_worker";
                                 $orderMode = "DESC";
                             } else if ($urlParams[2] == "latets") {
-                                $orderBy = "id_job";
+                                $orderBy = "id_worker";
                                 $orderMode = "ASC";
                             } else if ($urlParams[2] == "low") {
-                                $orderBy = "price_job";
+                                $orderBy = "price_worker";
                                 $orderMode = "ASC";
                             } else if ($urlParams[2] == "higt") {
-                                $orderBy = "price_job";
+                                $orderBy = "price_worker";
                                 $orderMode = "DESC";
                             } else {
-                                $orderBy = "id_job";
+                                $orderBy = "id_worker";
                                 $orderMode = "DESC";
                             }
                         } else {
-                            $orderBy = "id_job";
+                            $orderBy = "id_worker";
                             $orderMode = "DESC";
                         }
                     } else {
-                        $orderBy = "id_job";
+                        $orderBy = "id_worker";
                         $orderMode = "DESC";
                     }
 
-                    $linkTo = ["name_job", "title_list_job", "tags_job", "summary_job",];
-                    $selecte = "url_job,url_category,image_job,name_job,stock_job,offer_job,price_job,url_worker,reviews_job,views_category,name_category,id_category,views_subcategory,name_subcategory,id_subcategory,summary_job";
-
+                    $linkTo = ["displayname_user", "username_user", "title_list_worker", "tags_worker", "specialties_worker",];
+                    $selecte = "url_worker,url_category,picture_user,displayname_user,price_worker,reviews_worker,views_category,name_category,id_category,views_subcategory,name_subcategory,id_subcategory,specialties_worker,country_worker,city_worker,id_user,username_user";
+                    //"relations?rel=workers,users,categories,subcategories&type=worker,user,category,subcategory&linkTo=username_user,show_worker&search=maximil,show&orderBy=id_worker&orderMode=DESC&startAt=0&endAt=24&select=url_worker,url_category,picture_user,displayname_user,price_worker,reviews_worker,views_category,name_category,id_category,views_subcategory,name_subcategory,id_subcategory,specialties_worker"
                     foreach ($linkTo as $key => $value) {
 
                         /* filtrar por busqueda con el parametro url de busqueda*/
-                        $url = CurlController::api() . "relations?rel=jobs,categories,subcategories,workers&type=job,category,subcategory,worker&linkTo=" . $value . ",approval_job,state_job&search=" . $urlParams[0] . ",approved,show&orderBy=" . $orderBy . "&orderMode=" . $orderMode . "&startAt=" . $starAt . "&endAt=24&select=" . $selecte;
+                        $url = CurlController::api() . "relations?rel=workers,users,categories,subcategories&type=worker,user,category,subcategory&linkTo=" . $value . ",show_worker&search=" . $urlParams[0] . ",show&orderBy=" . $orderBy . "&orderMode=" . $orderMode . "&startAt=" . $starAt . "&endAt=24&select=" . $selecte;
                         $method = "GET";
                         $field = array();
                         $header = array();
 
                         $urlSearch = CurlController::request($url, $method, $field, $header);
                         if ($urlSearch->status == 200) {
-                            $select = "id_job";
-                            $url = CurlController::api() . "relations?rel=jobs,categories,subcategories,workers&type=job,category,subcategory,worker&linkTo=" . $value . ",approval_job,state_job&search=" . $urlParams[0] . ",approved,show&&select=" . $select;
+                            $select = "id_worker";
+                            $nameTabla= $value;
+                            $url = CurlController::api() . "relations?rel=workers,users,categories,subcategories&type=worker,user,category,subcategory&linkTo=" . $value . ",show_worker&search=" . $urlParams[0] . ",show&select=" . $select;
                             
                             $totalSearch =  CurlController::request($url, $method, $field, $header)->total;
                             break;
