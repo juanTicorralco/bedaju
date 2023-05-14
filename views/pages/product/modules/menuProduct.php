@@ -204,7 +204,6 @@
                             $rand = array(0,1,2,3,4);
                         }
                     }
-                    // echo '<pre>'; print_r($rand); echo '</pre>'; 
                     foreach ($rand as $key => $value) : ?>
 
                         <div class="media border p-3 mb-3">

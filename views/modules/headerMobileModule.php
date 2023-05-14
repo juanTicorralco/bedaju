@@ -119,7 +119,6 @@
                         $totalPriceSC= 0;
                         $ValorPrecioEnvio=0;
                         $preceProduct=0;
-                        // print_r(}($_COOKIE["listSC"]) . " -------");
                         if (isset($_COOKIE["listSC"]) && $shopinCard != NULL) {
                             $shopinCard = json_decode($_COOKIE["listSC"], true);
                             if(is_array($shopinCard)){

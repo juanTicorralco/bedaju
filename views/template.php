@@ -40,11 +40,12 @@ if (!empty($urlParams[0])) {
             $header = array();
 
             $urlProduct = CurlController::request($url, $method, $field, $header);
+
+            /////////////////aqui
     
             if ($urlProduct->status == 404) {
                 
-                 /* filter porducts whidt URL paremers */
-                 ////////////////////////////////////////////////////////Esta es para las tiendas
+                /* filter porducts whidt URL paremers */
                 $url = CurlController::api() . "workers?linkTo=url_worker&equalTo=" . $urlParams[0] . "&select=id_worker";
                 $method = "GET";
                 $field = array();
@@ -432,7 +433,7 @@ if($totalPro->status == 200){
         } else if ($urlProduct->status == 200) {
             include "pages/product/product.php";
         }else if($urlStores->status == 200){
-            include "pages/store/store.php";
+            include "pages/worker/worker.php";
         } else if ($urlSearch->status == 200) {
             include "pages/search/search.php";
         } else {
