@@ -45,8 +45,7 @@
     $select2 = "name_job,likes_job,image_job,url_job,url_category,summary_job,cover_job";
     $url2=CurlController::api()."relations?rel=jobs,categories&type=job,category&linkTo=id_worker_job,approval_job,state_job&equalTo=".$storeRes->id_worker.",approved,show&select=".$select2."&orderBy=views_job&orderMode=DESC";
     $bestSalesStore= CurlController::request($url2, $method, $field, $header);
-    // echo '<pre>'; print_r($bestSalesStore); echo '</pre>'; 
-    // return;
+   
     if($bestSalesStore->status == 200){
         $totalProductsStore=$bestSalesStore->total;
         $bestSalesStore = $bestSalesStore->result;

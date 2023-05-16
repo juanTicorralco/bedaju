@@ -34,15 +34,13 @@ if (!empty($urlParams[0])) {
         if ($urlSubcategories->status == 404) {
             /* filter porducts whidt URL paremers */
             // /////////////////////////////////////////////////////////////////////////Esta falta es para los productos o jobs
-            $url = CurlController::api() . "relations?rel=jobs,categories&type=job,category&linkTo=url_job&equalTo=" . $urlParams[0] . "&select=url_job,name_job,url_job,image_job,tags_job,summary_job";
+            $url = CurlController::api() . "relations?rel=jobs,categories,users&type=job,category,user&linkTo=url_job&equalTo=" . $urlParams[0] . "&select=url_job,name_job,url_job,image_job,tags_job,summary_job,id_user,username_user";
             $method = "GET";
             $field = array();
             $header = array();
 
             $urlProduct = CurlController::request($url, $method, $field, $header);
 
-            /////////////////aqui
-    
             if ($urlProduct->status == 404) {
                 
                 /* filter porducts whidt URL paremers */
@@ -157,33 +155,34 @@ if($totalPro->status == 200){
 
         if(!empty($urlParams[0])){
             if(isset($urlProduct->status) && $urlProduct->status == 200){
-                $name = $urlProduct->result[0]->name_product;
-                $title = "MarketPlace | ". $urlProduct->result[0]->name_product;
+                $name = $urlProduct->result[0]->name_job;
+                $title = "BEDAJU | ". $urlProduct->result[0]->name_job;
                 $description = "";
-                foreach(json_decode($urlProduct->result[0]->summary_product, true) as $key => $value){
+                foreach(json_decode($urlProduct->result[0]->summary_job, true) as $key => $value){
                     $description .= $value.", ";
                 }
                 $description = substr($description, 0, -2);
                 $keywords = "";
-                foreach(json_decode($urlProduct->result[0]->tags_product, true) as $key => $value){
+                foreach(json_decode($urlProduct->result[0]->tags_job, true) as $key => $value){
                     $keywords .= $value.", ";
                 }
                 $keywords = substr($keywords, 0, -2);
-                $imagen =  $path."/views/img/products/".$urlProduct->result[0]->url_category."/".$urlProduct->result[0]->image_product;
-                $url = $path.$urlProduct->result[0]->url_product;
+                $imagen =  $path."/views/img/users/".$urlProduct->result[0]->id_user."-".$urlProduct->result[0]->username_user."/jobs/". $urlProduct->result[0]->image_job;
+                //img/products/".$urlProduct->result[0]->url_category."/".$urlProduct->result[0]->image_product;
+                $url = $path.$urlProduct->result[0]->url_job;
             }else{
-                $title = "MarketPlace";
-                $name = "MarketPlace | Home";
-                $description = "Pagina de mercadeo de compra y venta de articulos y la creacion de tiendas";
-                $keywords = "market, products, sales, store, shell";
+                $title = "BEDAJU";
+                $name = "BEDAJU | Home";
+                $description = "Aplicacion dedicada en colocar a una cliente con un respectivo trabajador";
+                $keywords = "market, products, sales, store, shell, jobs, work, trabajo, albañileria, albañiles, albañil, contruccion, automotriz, carros, herreria, carpinteria, electricidad";
                 $imagen =  $path."/views/img/bg/about-us.jpg";
                 $url = $path;
             }
         }else{
-            $title = "MarketPlace";
-            $name = "MarketPlace | Home";
-            $description = "Pagina de mercadeo de compra y venta de articulos y la creacion de tiendas";
-            $keywords = "market, products, sales, store, shell";
+            $title = "BEDAJU";
+            $name = "BEDAJU | Home";
+            $description = "Aplicacion dedicada en colocar a una cliente con un respectivo trabajador";
+            $keywords = "market, products, sales, store, shell, jobs, work, trabajo, albañileria, albañiles, albañil, contruccion, automotriz, carros, herreria, carpinteria, electricidad";
             $imagen =  $path."/views/img/bg/about-us.jpg";
             $url = $path;
         }
@@ -203,8 +202,8 @@ if($totalPro->status == 200){
 
     <!-- metadatod twiter -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@wesharp">
-    <meta name="twitter:creator" content="@wesharp">
+    <meta name="twitter:site" content="@bedaju">
+    <meta name="twitter:creator" content="@bedaju">
     <meta name="twitter:title" content="<?php echo $name; ?>">
     <meta name="twitter:description" content="<?php echo $description; ?>">
     <meta name="twitter:image" content="<?php echo $imagen; ?>">
@@ -356,10 +355,7 @@ if($totalPro->status == 200){
     <script src="js/plugins/twbs-pagination.min.js"></script>
 
     <!-- Preloader placeholder loader -->
-    <script src="https://cdn.jsdelivr.net/npm/placeholder-loading/dist/css/placeholder-loading.min.css"></script>
-
-    <!-- Funciones2-->
-    <script src="js/funciones2.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/placeholder-loading/dist/css/placeholder-loading.min.css"></script> -->
 
     <!-- notie alert -->
     <script src="https://unpkg.com/notie"></script>
@@ -397,6 +393,9 @@ if($totalPro->status == 200){
 
     <!-- shape Share -->
     <script src="js/plugins/shape.share.js"></script>
+
+     <!-- Funciones2-->
+    <script src="js/funciones2.js"></script>
 </head>
 
 <body>
@@ -451,35 +450,34 @@ if($totalPro->status == 200){
 
         <div class="container">
 
-            <form class="ps-form--newsletter" action="do_action" method="post">
+        <form  method="POST" class="needs-validation" novalidate>   
+            <div class="row">
 
-                <div class="row">
-
-                    <div class="col-xl-5 col-12 ">
-                        <div class="ps-form__left">
-                            <h3>Newsletter</h3>
-                            <p>Subscribete para recibir cupones y promociones!</p>
-                        </div>
+                <div class="col-xl-5 col-12 ">
+                    <div class="ps-form__left">
+                        <h3>Newsletter</h3>
+                        <p>Subscribete para recibir cupones y promociones!</p>
                     </div>
-
-                    <div class="col-xl-7 col-12 ">
-
-                        <div class="ps-form__right">
-
-                            <div class="form-group--nest">
-
-                                <input class="form-control" type="email" placeholder="Escribe tu Email">
-                                <button class="ps-btn">Subscribir</button>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
                 </div>
 
-            </form>
+                <div class="col-xl-7 col-12 ">
+
+                    <div class="ps-form__right">
+
+                        <div class="form-group--nest">
+                            <input class="form-control" type="email" name="emailnewes" placeholder="Escribe tu Email" required pattern="[^@]+@[^@]+\.[a-zA-Z]{2,}" onchange="validatejs(event, 'email')">
+                            <button class="ps-btn" type="submit">Subscribir</button>
+                            <?php
+                                $newemail = new ControllerUser();
+                                $newemail -> newsemail();
+                            ?>
+                        </div>
+                        <div class="valid-feedback"></div>
+                        <div class="invalid-feedback">El nombre es requerido</div>
+                    </div>
+                </div>
+            </div>
+        </form>
 
         </div>
 

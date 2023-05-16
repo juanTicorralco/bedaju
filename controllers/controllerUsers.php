@@ -544,4 +544,51 @@ class ControllerUser
             }
         }
     }
+
+    public function newsemail(){
+        if(isset($_POST["emailnewes"])){
+            if( preg_match('/^[^@]+@[^@]+\.[a-zA-Z]{2,}$/', $_POST["emailnewes"])){
+                $api = CurlController::api();
+                $url = $api . "newsletter?token=tokenGlobal&select=email_newsletter&linkTo=email_newsletter&equalTo=". $_POST["emailnewes"];
+                $metod = "GET";
+                $fields = array();
+                $headers = array();
+                $emailSearch = CurlController::request($url, $metod, $fields, $headers); 
+
+                // print_r($emailSearch->status == 400);
+                if($emailSearch->status == 404){
+                    $url = $api . "newsletter?newslater=true";
+                    $metod = "POST";
+                    $fields = array(
+                        "email_newsletter" =>  $_POST["emailnewes"],
+                        "name_newsletter" => null
+                    );
+                    $header = array(
+                        "Content-Type" => "application/x-www-form-urlencoded"
+                    );
+                    $newsemail = CurlController::request($url, $metod, $fields, $header); 
+                    
+                    if($newsemail->status == 200){
+                        echo '
+                            <script>
+                                formatearAlertas();
+                                switAlert("success", "Tu email se registro correctamente!!", null, null, 1500);
+                            </script>';
+                    }
+                }else{
+                    echo '
+                    <script>
+                        formatearAlertas();
+                        switAlert("error", "Este email ya se registro!!", null, null, 1500);
+                    </script>';
+                }
+            }else{
+                echo '
+                    <script>
+                        formatearAlertas();
+                        switAlert("success", "No se pudo registrar tu email!!", null, null, 1500);
+                    </script>';
+            }
+        }
+    }
 }

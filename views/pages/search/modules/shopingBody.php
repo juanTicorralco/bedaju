@@ -8,9 +8,6 @@ if ($totalResultProducts == "no found") {
     $url4 = CurlController::api() . "relations?rel=workers,users,categories,subcategories&type=worker,user,category,subcategory&linkTo=url_subcategory,show_worker&equalTo=" . $urlParams[0] . ",show&orderBy=" . $orderBy . "&orderMode=" . $orderMode . "&startAt=" . $starAt . "&endAt=24&select=url_worker,url_category,picture_user,displayname_user,show_worker,price_worker,reviews_worker,id_user,username_user,name_subcategory,country_worker,city_worker,specialties_worker";
     $totalResultProducts = CurlController::request($url4, $method, $field, $header)->result;
 }
-
-// echo "<pre>"; print_r($nameTabla); echo "</pre>";
-// return;
 ?>
 <div class="ps-tabs">
 
