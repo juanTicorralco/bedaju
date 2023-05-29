@@ -42,7 +42,7 @@
     // }
 
     /* Bring the best sales products */
-    $select2 = "name_job,likes_job,image_job,url_job,url_category,summary_job,cover_job";
+    $select2 = "name_job,likes_job,image_job,url_job,url_category,summary_job,cover_job,id_job";
     $url2=CurlController::api()."relations?rel=jobs,categories&type=job,category&linkTo=id_worker_job,approval_job,state_job&equalTo=".$storeRes->id_worker.",approved,show&select=".$select2."&orderBy=views_job&orderMode=DESC";
     $bestSalesStore= CurlController::request($url2, $method, $field, $header);
    
@@ -199,7 +199,11 @@ Breadcrumb
                         
                         <?php include "modules/shopingHeader.php"; ?>
                         <!-- todos los productos -->
+                        <?php  if( count($AllProductStore)>0 ): ?>
                         <?php include "modules/listJobs.php"; ?>
+                        <?php else: ?>
+                            <h4 class="p-5">No hay trabajos para mostrarte por ahora</h4>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>

@@ -26,7 +26,7 @@
 
                                             <!-- <div class="ps-product__badge bg-danger mt-5 "><i class="fa-solid fa-circle-heart"></i></i></div> -->
                                             <!-- <button class="ps-product__badge bg-primary border text-white rounded-pill border-primary shadow-none p-3 "><i class="fas fa-thumbs-up"></i> <strong><?php //echo $value->likes_job; ?></strong></button> -->
-                                            <button class="btn ps-product__badge bg-white border border-primary text-primary rounded-pill p-3 "><i class="fas fa-thumbs-up"></i> <strong><?php echo $value->likes_job; ?></strong></button>
+                                            <button class="btn ps-product__badge bg-white border border-primary text-primary rounded-pill p-3" onclick="likeFunk('<?php echo $_SESSION['user']->id_user ?>','<?php echo $value->url_job; ?>', '<?php echo CurlController::api(); ?>')"><i class="fas fa-thumbs-up"></i> <strong class="job<?php echo $value->id_job ?>"><?php echo $value->likes_job; ?></strong></button>
                                             <button class="btn ps-product__badge bg-primary border text-white rounded-pill border-primary shadow-none p-3 "><i class="fas fa-comment"></i> <strong><?php echo $value->likes_job; ?></strong></button>
 
                                             

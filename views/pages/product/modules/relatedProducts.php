@@ -11,8 +11,6 @@ $method="GET";
 $field=array();
 $header=array();
 $relatedworkers= CurlController::request($url, $method, $field, $header)->result;
-// echo "<pre>"; print_r($relatedworkers); echo "</pre>";
-// return;
 ?>
 <div class="ps-section--default">
     <div class="ps-section__header">

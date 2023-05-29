@@ -47,9 +47,14 @@
                 $method11 = "GET";
                 $field11 = array();
                 $header11 = array();
-                $commentJobs = CurlController::request($url11, $method11, $field11, $header11)->total;
+                $commentJobs = CurlController::request($url11, $method11, $field11, $header11);
+                if($commentJobs->status == 200){
+                    $commentJobs->total;
+                }else{
+                    $commentJobs=0;
+                }
             ?>
-            <button class="btn bg-white border border-primary text-primary rounded-pill p-3 mr-3"><i class="fas fa-thumbs-up"></i> <strong><?php echo $producter->likes_job; ?></strong></button>
+            <button class="btn bg-white border border-primary text-primary rounded-pill p-3 mr-3" onclick="likeFunk('<?php echo $_SESSION['user']->id_user ?>','<?php echo $producter->url_job; ?>', '<?php echo CurlController::api(); ?>')"><i class="fas fa-thumbs-up"></i> <strong class="job<?php echo $producter->id_job ?>"><?php echo $producter->likes_job; ?></strong></button>
             <button class="btn bg-primary border text-white rounded-pill border-primary shadow-none p-3 "><i class="fas fa-comment"></i> <strong><?php echo $commentJobs; ?></strong></button>
         </div>
     </div>

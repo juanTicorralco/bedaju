@@ -12,7 +12,6 @@ class ControllerUser
                isset($_POST["createApellido"]) && preg_match('/^[A-Za-zñÑáéíóúÁÉÍÓÚ ]{1,}$/', $_POST["createApellido"]) &&
                isset($_POST["createPassword"]) && preg_match('/^[#\\=\\$\\;\\*\\_\\?\\¿\\!\\¡\\:\\.\\,\\0-9a-zA-Z]{1,}$/', $_POST["createPassword"])
             ) {
-
                 $displayName = TemplateController::capitalize(strtolower($_POST["createNombre"])) . " " . TemplateController::capitalize(strtolower($_POST["createApellido"]));
                 $user = TemplateController::capitalize(strtolower(explode("@", $_POST["createEmail"])[0]));
                 $email = strtolower($_POST["createEmail"]);
@@ -32,12 +31,9 @@ class ControllerUser
                     $header = array(
                         "Content-Type" => "application/x-www-form-urlencoded"
                     );
-
-
                     $response = CurlController::request($url, $method, $fields, $header);
 
                     if ($response->status == 200) {
-
                         // registrar email
                         $name = $displayName;
                         $subject = "Registro WeSharp";
@@ -45,9 +41,12 @@ class ControllerUser
                         $url = TemplateController::path() . "acount&login&" . base64_encode($email);
                         $post = "Confirmar Email";
                         $sendEmail = TemplateController::sendEmail($name, $subject, $email, $message, $url, $post);
-
                         if ($sendEmail == "ok") {
-                            echo '<div class="alert alert-success">Tu usuario se registro correctamente, confirma tu cuenta en tu email (aveces esta en spam)</div>
+                            echo '
+                            <div class="alert alert-success">Tu usuario se registro correctamente, confirma tu cuenta en tu email (aveces esta en spam)</div>
+                            <a type="button" class="btn p-3 mb-2 bg-dark text-white d-block" onclick="reendEmail('.$displayName.','. $email .')">
+                                Reenviar
+                            </a>
                             <script>
                             formatearAlertas()
                         </script>';

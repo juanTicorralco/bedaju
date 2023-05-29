@@ -12,7 +12,7 @@ if(localStorage.getItem("token_user")){
        } 
      }
 }
-if(urlMaster != "http://wesharp.com/acount&login" && urlMaster != "http://wesharp.com/acount&enrollment" && !localStorage.getItem("token_user")){
+if(urlMaster != "http://bedaju.com/acount&login" && urlMaster != "http://bedaju.com/acount&enrollment" && !localStorage.getItem("token_user")){
   setCookie("UrlPage", urlMaster, 1);
 }
 /* funcion para resetear url de los filtros */
@@ -105,7 +105,7 @@ function changeQualyty(quantity, move, stock, index) {
   totalp(index);
 }
 
-if(window.location == "http://wesharp.com/acount&enrollment"){
+if(window.location == "http://bedaju.com/acount&enrollment"){
   window.onload = function() {
     var myInput = document.getElementById('passRep');
     myInput.onpaste = function(e) {
@@ -432,7 +432,6 @@ function addWishListDos(urlProducto, urlApi, urlProductoDos) {
 // funcion para eliminar elementos a la lista de deseos
 function removeWishlist(urlProduct, urlApi) {
   switAlert("confirm", "Esta seguro de eliminar de la lista de deseos?", null, null, null).then(resp => {
-
     if (resp == true) {
       // revisar que el token coincida con la bd
       let token = localStorage.getItem("token_user");
@@ -520,22 +519,21 @@ function removeBagSC(urlProduct, urlPagina){
 }
 
 //Agredamos articulos al carrito de compras
-function addBagCard(urlProduct, category, image, name, price, path, urlApi, tag) {
+function addBagCard(urlworker, category, image, name, price, path, urlApi, tag) {
   // Traer informacion del producto 
-  let select = "stock_product,specifications_product,shipping_product,offer_product";
+  let select = "id_worker,show_worker";
 
   let settings = {
     url:
-      urlApi + "products?linkTo=url_product&equalTo=" + urlProduct + "&select=" + select,
+      urlApi + "workers?linkTo=url_worker&equalTo=" + urlworker + "&select=" + select,
     method: "GET",
     timeaot: 0,
   };
 
   $.ajax(settings).done(function (response) {
     if (response.status == 200) {
-
-      if (response.result[0].stock_product == 0) {
-        switAlert("error", "Por el momento no tenemos en stock este producto", null, null, 3000);
+      if (response.result[0].show_worker !== "show") {
+        switAlert("error", "Por el momento este trabajador tiene trabajo", null, null, 3000);
         return;
       }
 
@@ -553,42 +551,42 @@ function addBagCard(urlProduct, category, image, name, price, path, urlApi, tag)
         var quantity = 1;
       }
 
-      //preguntamos si detalles viene bacio
-      if(detalleProduct === ""){
-        if (response.result[0].specifications_product != "" ) {
-          if(response.result[0].specifications_product != null){
-          let DetProd = JSON.parse(response.result[0].specifications_product);
-          detalleProduct = '[{';
-          for (const i in DetProd) {
-            let propiety = Object.keys(DetProd[i]).toString();
-            detalleProduct += '"' + propiety + '":"' + DetProd[i][propiety][0] + '",';
-          }
-          detalleProduct = detalleProduct.slice(0, -1);
-          detalleProduct += '}]';
-        }
-      }
-      }else{
-        let newDetail= JSON.parse(detalleProduct);
+      // //preguntamos si detalles viene bacio
+      // if(detalleProduct === ""){
+      //   if (response.result[0].specifications_product != "" ) {
+      //     if(response.result[0].specifications_product != null){
+      //     let DetProd = JSON.parse(response.result[0].specifications_product);
+      //     detalleProduct = '[{';
+      //     for (const i in DetProd) {
+      //       let propiety = Object.keys(DetProd[i]).toString();
+      //       detalleProduct += '"' + propiety + '":"' + DetProd[i][propiety][0] + '",';
+      //     }
+      //     detalleProduct = detalleProduct.slice(0, -1);
+      //     detalleProduct += '}]';
+      //   }
+      // }
+      // }else{
+      //   let newDetail= JSON.parse(detalleProduct);
 
-        if (response.result[0].specifications_product != null) {
-          let DetProd = JSON.parse(response.result[0].specifications_product);
-          detalleProduct = '[{';
-          for (const i in DetProd) {
-            let propiety = Object.keys(DetProd[i]).toString();
-            detalleProduct += '"' + propiety + '":"' + DetProd[i][propiety][0] + '",';
-          }
-          detalleProduct = detalleProduct.slice(0, -1);
-          detalleProduct += '}]';
-        }
+      //   if (response.result[0].specifications_product != null) {
+      //     let DetProd = JSON.parse(response.result[0].specifications_product);
+      //     detalleProduct = '[{';
+      //     for (const i in DetProd) {
+      //       let propiety = Object.keys(DetProd[i]).toString();
+      //       detalleProduct += '"' + propiety + '":"' + DetProd[i][propiety][0] + '",';
+      //     }
+      //     detalleProduct = detalleProduct.slice(0, -1);
+      //     detalleProduct += '}]';
+      //   }
 
-        for(const i in JSON.parse(detalleProduct)[0]){
-          if(newDetail[0][i] == undefined){
-            Object.assign(newDetail[0], {[i]: JSON.parse(detalleProduct)[0][i]})
-          }
-        }
+      //   for(const i in JSON.parse(detalleProduct)[0]){
+      //     if(newDetail[0][i] == undefined){
+      //       Object.assign(newDetail[0], {[i]: JSON.parse(detalleProduct)[0][i]})
+      //     }
+      //   }
 
-        detalleProduct= JSON.stringify(newDetail);
-      }
+      //   detalleProduct= JSON.stringify(newDetail);
+      // }
 
       // preguntamos is la cookie ya existe
       let myCookie = document.cookie;
@@ -613,7 +611,7 @@ function addBagCard(urlProduct, category, image, name, price, path, urlApi, tag)
           var count2 = 0;
           var index = null;
           for (let i in arrayList) {
-            if (arrayList[i].product == urlProduct) {
+            if (arrayList[i].product == urlworker) {
               count2--;
               index = i;
             } else {
@@ -622,7 +620,7 @@ function addBagCard(urlProduct, category, image, name, price, path, urlApi, tag)
           }
           if (count2 == arrayList.length) {
             arrayList.push({
-              "product": urlProduct,
+              "product": urlworker,
               "details": detalleProduct,
               "quantity": parseInt(quantity)
             });
@@ -711,23 +709,23 @@ function addBagCard(urlProduct, category, image, name, price, path, urlApi, tag)
             $("#bagTok").after(`
               <div class="ps-product--cart-mobile bg-white p-3">
                 <div class="ps-product__thumbnail">
-                    <a class="m-0" href="${path + urlProduct}">
+                    <a class="m-0" href="${path + urlworker}">
                     <img src="img/products/${category}/${image}" alt="${name}">
                     </a>
                 </div>
   
                 <div class="ps-product__content">
-                <a class="ps-product__remove text-danger btn" onclick="removeBagSC('${urlProduct}', '${location.reload()}')">
+                <a class="ps-product__remove text-danger btn" onclick="removeBagSC('${urlworker}', '${location.reload()}')">
                 <i class="fas fa-trash-alt"></i>
                 </a>
-                    <a class="m-0" href="${path + urlProduct}">${name}</a>
-                    <p class="m-0"><strong></strong> WeSharp</p>
+                    <a class="m-0" href="${path + urlworker}">${name}</a>
+                    <p class="m-0"><strong></strong> Bedaju</p>
                     <div class="small text-secondary">
                     <p class='mb-0'> <strong> Detalles por defecto:</strong></p>
                     <div class="mb-0">${listFun(arrayList)}</div>                         
                     </div>
                     <p class="m-0"><strong>Envio: </strong> $<span class="envibagcl">${JSON.parse(response.result[0].shipping_product) * 1.5}</span></p>
-                    <small> <spam class="${urlProduct}">1</spam> x $
+                    <small> <spam class="${urlworker}">1</spam> x $
                     ${priceFun(JSON.parse(response.result[0].offer_product), price)}
                     </small>
                 </div>
@@ -750,14 +748,16 @@ function addBagCard(urlProduct, category, image, name, price, path, urlApi, tag)
             $('.totalWishBag').html(totalbager + 1);
           } else {
            
-            let var1 = parseFloat(priceFun(JSON.parse(response.result[0].offer_product), price));
-            let var3 = Number($(`.${urlProduct}`).html());
-            $(`.${urlProduct}`).html(var3 + 1);
-            let envios = JSON.parse(response.result[0].shipping_product);
+            // let var1 = parseFloat(priceFun(JSON.parse(response.result[0].offer_product), price));
+            let var1 = parseFloat(priceFun(null, price));
+            let var3 = Number($(`.${urlworker}`).html());
+            $(`.${urlworker}`).html(var3 + 1);
+            // let envios = JSON.parse(response.result[0].shipping_product);
+            let envios = null;
             let var4 = resetenvio(var3, envios);
             let tobagtal = Number($('.tobagtal').html());
     
-            var3 = Number($(`.${urlProduct}`).html());
+            var3 = Number($(`.${urlworker}`).html());
             $(".envibagcl").html(var4);
             var4 = Number($(".envibagcl").html());
 
@@ -769,7 +769,7 @@ function addBagCard(urlProduct, category, image, name, price, path, urlApi, tag)
         // creamos una cookie
         var arrayList = [];
         arrayList.push({
-          "product": urlProduct,
+          "product": urlworker,
           "details": detalleProduct,
           "quantity": 1
         });
@@ -816,23 +816,23 @@ function addBagCard(urlProduct, category, image, name, price, path, urlApi, tag)
         $("#bagTok").after(`
         <div class="ps-product--cart-mobile bg-white p-3">
           <div class="ps-product__thumbnail">
-              <a class="m-0" href="${path + urlProduct}">
+              <a class="m-0" href="${path + urlworker}">
               <img src="img/products/${category}/${image}" alt="${name}">
               </a>
           </div>
 
           <div class="ps-product__content">
-          <a class="ps-product__remove text-danger btn" onclick="removeBagSC('${urlProduct}', '${location.reload()}')">
+          <a class="ps-product__remove text-danger btn" onclick="removeBagSC('${urlworker}', '${location.reload()}')">
           <i class="fas fa-trash-alt"></i>
           </a>
-              <a class="m-0" href="${path + urlProduct}">${name}</a>
-              <p class="m-0"><strong></strong> WeSharp</p>
+              <a class="m-0" href="${path + urlworker}">${name}</a>
+              <p class="m-0"><strong></strong> Bedaju</p>
               <div class="small text-secondary">
               <p class='mb-0'> <strong> Detalles por defecto:</strong></p>
               <div class="mb-0">${listFun(arrayList)}</div>                         
               </div>
               <p class="m-0"><strong>Envio: </strong> $ <span class="envibagcl">${JSON.parse(response.result[0].shipping_product) * 1.5}</span></p>
-              <small> <spam class="${urlProduct}">${1}</spam> x $
+              <small> <spam class="${urlworker}">${1}</spam> x $
                ${priceFun(JSON.parse(response.result[0].offer_product), price)}
               </small>
           </div>
@@ -857,7 +857,199 @@ function addBagCard(urlProduct, category, image, name, price, path, urlApi, tag)
 }
 
 function bagCkeck(){
-  window.location = "http://wesharp.com/checkout";
+  window.location = "http://bedaju.com/checkout";
+}
+
+function likeFunk(iduser, urljob, urlApi){
+   // valdar que es token exista
+   if (localStorage.getItem("token_user") != null) {
+    // validar que el token sea el mismo que en la bd
+    let token = localStorage.getItem("token_user");
+    let settings = {
+      url:
+        urlApi + "users?equalTo=" + token + "&linkTo=token_user&select=id_user,likes_user",
+      method: "GET",
+      timeaot: 0,
+    };
+
+    //   respuesta incorrecta
+    $.ajax(settings).error(function (response) {
+      if (response.responseJSON.status == 404) {
+        switAlert("error", "Ocurrio un error... por favor vuelve a logearte", null, null, 3000);
+        return;
+      }
+    });
+
+    // respuesta correcta
+    $.ajax(settings).done(function (response) {
+      if (response.status == 200) {
+        let id = response.result[0].id_user;
+        let likes = [];
+        likes = JSON.parse(response.result[0].likes_user);
+        let noRepeat = 0;
+        // preguntar si hay articulos en la lista de deseos 
+        if (likes != null && likes.length > 0) {
+          likes.forEach(list => {
+            if (list == urljob) {
+              noRepeat--;
+            } else {
+              noRepeat++;
+            }
+          });
+          // preguntamos si ya esta en la lista de deseos
+          if (likes.length != noRepeat) {
+            switAlert("confirm", "Esta seguro de querer quitar tu like?", null, null, null).then(resp => {
+              if(resp){
+                likes.forEach((list, index) => {
+                  if (list == urljob) {
+                    likes.splice(index, 1);
+                    $(`.${urljob}`).remove();
+                  }
+                });
+      
+                // Cuando no se quite de la lista 
+                let settings = {
+                  "url": urlApi + "users?id=" + id + "&nameId=id_user&token=" + token,
+                  "method": "PUT",
+                  "timeaot": 0,
+                  "headers": {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                  },
+                  "data": {
+                    "likes_user": JSON.stringify(likes),
+                  },
+                };
+      
+                $.ajax(settings).done(function (response) {
+                  if (response.status == 200) {
+                    let settings = {
+                      "url": urlApi + "jobs?equalTo=" + urljob + "&linkTo=url_job&select=likes_job,id_job",
+                      "method": "GET",
+                      "timeaot": 0,
+                    };
+                    $.ajax(settings).done(function (response) {
+                      if (response.status == 200) {
+                        let settings = {
+                          "url": urlApi + "jobs?id=" + response.result[0].id_job + "&nameId=id_job&token=" + token,
+                          "method": "PUT",
+                          "timeaot": 0,
+                          "headers": {
+                            "Content-Type": "application/x-www-form-urlencoded",
+                          },
+                          "data": {
+                            "likes_job": response.result[0].likes_job-1,
+                          },
+                        };
+              
+                        $.ajax(settings).done(function (response2) {
+                          if(response2.status == 200){
+                            let totalWishlist = Number($(".job"+response.result[0].id_job).html());
+                            $(".job"+response.result[0].id_job).html(totalWishlist - 1);
+                          }
+                        });
+                      }
+                    });
+                  }
+                });
+              }
+            })
+          } else {
+
+            likes.push(urljob);
+            // Cuando no exista la lista de deseos inicialmente
+            let settings = {
+              "url": urlApi + "users?id=" + id + "&nameId=id_user&token=" + token + "&select=id_user",
+              "method": "PUT",
+              "timeaot": 0,
+              "headers": {
+                "Content-Type": "application/x-www-form-urlencoded",
+              },
+              "data": {
+                "likes_user": JSON.stringify(likes),
+              },
+            };
+
+            $.ajax(settings).done(function (response) {
+              if (response.status == 200) {
+                let settings = {
+                  "url": urlApi + "jobs?equalTo=" + urljob + "&linkTo=url_job&select=likes_job,id_job",
+                  "method": "GET",
+                  "timeaot": 0,
+                };
+                $.ajax(settings).done(function (response) {
+                  if (response.status == 200) {
+                    let settings = {
+                      "url": urlApi + "jobs?id=" + response.result[0].id_job + "&nameId=id_job&token=" + token,
+                      "method": "PUT",
+                      "timeaot": 0,
+                      "headers": {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                      },
+                      "data": {
+                        "likes_job": response.result[0].likes_job+1,
+                      },
+                    };
+          
+                    $.ajax(settings).done(function (response2) {
+                      if(response2.status == 200){
+                        let totalWishlist = Number($(".job"+response.result[0].id_job).html());
+                        $(".job"+response.result[0].id_job).html(totalWishlist + 1);
+                      }
+                    });
+                  }
+                });
+              }
+            });
+          }
+        } else {
+          // Cuando no exista la lista de deseos inicialmente
+          let settings = {
+            "url": urlApi + "users?id=" + id + "&nameId=id_user&token=" + token + "&select=id_user",
+            "method": "PUT",
+            "timeaot": 0,
+            "headers": {
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+            "data": {
+              "likes_user": '["' + urljob + '"]',
+            },
+          };
+          $.ajax(settings).done(function (response) {
+            if (response.status == 200) {
+              let settings = {
+                "url": urlApi + "jobs?equalTo=" + urljob + "&linkTo=url_job&select=likes_job,id_job",
+                "method": "GET",
+                "timeaot": 0,
+              };
+              $.ajax(settings).done(function (response) {
+                if (response.status == 200) {
+                  let settings = {
+                    "url": urlApi + "jobs?id=" + response.result[0].id_job + "&nameId=id_job&token=" + token,
+                    "method": "PUT",
+                    "timeaot": 0,
+                    "headers": {
+                      "Content-Type": "application/x-www-form-urlencoded",
+                    },
+                    "data": {
+                      "likes_job": response.result[0].likes_job+1,
+                    },
+                  };
+                  $.ajax(settings).done(function (response2) {
+                    if(response2.status == 200){
+                      let totalWishlist = Number($(".job"+response.result[0].id_job).html());
+                      $(".job"+response.result[0].id_job).html(totalWishlist + 1);
+                    }
+                  });
+                }
+              });
+            }
+          });
+        }
+      }
+    });
+  } else {
+    switAlert("error", "Para agregar a la lista de deseos debes estar logeado", null, null, 3000);
+  }
 }
 
 // seleccionar detalles al producto
@@ -2033,6 +2225,19 @@ function removesProducts(idProduct){
     }
 
   })
+}
+
+function reendEmail(displayName,email){
+  $.ajax({
+    method: "POST",
+    url: $("#urlApi").val()+"ajax/resend.php",
+    data: { display: displayName,
+            ur:url,
+            em:email }
+  })
+    .done(function( response ) {
+      $("ul.ps-list--social").html(response);
+    });
 }
 
 $(document).on("click", ".nextProcess", function(){
