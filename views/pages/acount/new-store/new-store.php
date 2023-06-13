@@ -8,10 +8,9 @@ if (!isset($_SESSION['user'])) {
     $time= time();
     if($_SESSION["user"]->token_exp_user < $time){
         echo '<script>
-        switAlert("error", "Para proteger tus datos, si no hay actividad en tu cuenta, se cierra automaticamente. Vuelve a logearte!", "' . $path . 'acount&logout","");
-            
-    </script>';
-    return;
+        switAlert("error", "Para proteger tus datos, si no hay actividad en tu cuenta, se cierra automaticamente. Vuelve a logearte!", "' . $path . 'acount&logout","");            
+        </script>';
+        return;
     }else{
         // traer la lista de deseos
         // $select="url_product,url_category,name_product,image_product,price_product,offer_product,stock_product";
@@ -30,118 +29,70 @@ if (!isset($_SESSION['user'])) {
 <!--=====================================
 My Account Content
 ======================================--> 
-
 <div class="ps-vendor-dashboard pro">
-
     <div class="container">
-
         <div class="ps-section__header">
-
             <!--=====================================
             Profile
             ======================================--> 
-
             <?php include "views/pages/acount/profile/profile.php"; ?>
-
             <!--=====================================
             Nav Account
             ======================================--> 
-
             <div class="ps-section__content">
-
                 <ul class="ps-section__links">
-                    <li ><a href="<?php echo $path; ?>acount&wishAcount">My Wishlist</a></li>
-                    <li ><a href="<?php echo $path; ?>acount&my-shopping">My Shopping</a></li>
-                    <li class="active"><a href="<?php echo $path; ?>acount&my-store">My Store</a></li>
-                    <li><a href="<?php echo $path; ?>acount&my-sales">My Sales</a></li>
+                    <li ><a href="<?php echo $path; ?>acount&wishAcount">Guardados</a></li>
+                    <li ><a href="<?php echo $path; ?>acount&my-shopping">Pedidos</a></li>
+                    <li class="active"><a href="<?php echo $path; ?>acount&my-worker">Trabajador</a></li>
+                    <li><a href="<?php echo $path; ?>acount&my-sales">Metricas</a></li>
                 </ul>
-
                 <!--=====================================
                 New Store
                 ======================================--> 
                 <div class="ps-page__content text-center row">
-
                     <div class="container">
-
                         <div class="ps-section__header">
-
-                            <h1>New to MarketPlace?</h1>
-
-                            <h4>Join a marketplace where nearly 50 million buyers around <br> the world shop for unique items</h4>
-
+                            <h1>Nuevo en BEDAJU?</h1>
+                            <h4>Unete al lugar donde las personas podran encontrarte <br> Y contratar tus servicios como profecional</h4>
                         </div>
-
                         <div class="row">
-
                             <div class="col-lg-4 col-12">
-
                                 <div class="card">
-
                                     <div class="card-body">
-                                
                                         <img src="img/shop-1.jpg" class="img-fluid">
-
                                     </div>
-
                                     <div class="card-footer text-center">
-
                                         <button 
                                         class="btn btn-warning btn-lg"
                                         data-toggle="tab"
                                         href="#terms"
                                         onclick="goTermins()"
-                                        ><span class="badge badge-secondary">1</span> Accept terms and conditions</button>
-                                    
+                                        ><span class="badge badge-secondary">1</span> Aceptar terminos y condiciones</button>
                                     </div>
-
                                 </div>
-
                             </div>
-
                             <div class="col-lg-4 col-12">
-
                                 <div class="card">
-
                                     <div class="card-body">
-                                
                                         <img src="img/shop-2.jpg" class="img-fluid">
-
                                     </div>
-
                                     <div class="card-footer text-center">
-
-                                        <button class="btn btn-warning btn-lg disabled btnCreateStore"><span class="badge badge-secondary">2</span> Create Store</button>
-                                    
+                                        <button class="btn btn-warning btn-lg disabled btnCreateStore"><span class="badge badge-secondary">2</span> Crear Perfil</button>
                                     </div>
-
                                 </div>
-
                             </div>
-
                                 <div class="col-lg-4 col-12">
-
                                 <div class="card">
-
                                     <div class="card-body">
-                                
                                         <img src="img/shop-3.jpg" class="img-fluid">
-
                                     </div>
-
                                     <div class="card-footer text-center">
-
-                                        <button class="btn btn-warning btn-lg disabled btnCreateProduct"><span class="badge badge-secondary">3</span> Create Product</button>
-                                    
+                                        <button class="btn btn-warning btn-lg disabled btnCreateProduct"><span class="badge badge-secondary">3</span> Subir Trabajo</button>
                                     </div>
-
                                 </div>
-
                             </div>
-
                         </div>
-
                         <!-- modules -->
-
                         <form class="needs-validation" novalidate method="POST" enctype="multipart/form-data">
                             <input type="hidden" value="<?php echo CurlController::api();?>" id="urlApi">
                             <div class="tab-content" id="tabContent">
@@ -152,19 +103,9 @@ My Account Content
                                 ?>
                             </div>
                         </form>
-
                     </div>
-
                 </div>
-                
-
             </div>
-
-
         </div>
-
     </div>
-
 </div>
-
-  

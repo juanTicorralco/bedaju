@@ -1,32 +1,30 @@
 <?php
 $idStores="";
-$select = "id_store";
-$url = CurlController::api()."stores?linkTo=id_user_store&equalTo=".$_SESSION["user"]->id_user."&select=".$select;
+$select = "id_worker";
+$url = CurlController::api()."workers?linkTo=id_user_worker&equalTo=".$_SESSION["user"]->id_user."&select=".$select;
 $method = "GET";
 $fields = array();
 $headers = array();
 $store = CurlController::request($url,$method,$fields,$headers);
-
+// echo "<pre>"; print_r($store); echo "</pre>";
+// return;
 if($store->status == 200){
     $idStores = $store->result[0]->id_store;
-
-    $url = CurlController::api()."orders?linkTo=id_store_order,status_order&equalTo=".$idStores.",pending&select=id_order&token=".$_SESSION["user"]->token_user;
+    $url = CurlController::api()."orders?linkTo=id_worker_order,status_order&equalTo=".$idStores.",pending&select=id_order&token=".$_SESSION["user"]->token_user;
     $ordersid = CurlController::request($url,$method,$fields,$headers);
     if($ordersid->status == 200){
         $totalOrders = $ordersid->total;
     }else{
         $totalOrders = 0;
     }
-
-    $url = CurlController::api()."products?linkTo=id_store_product&equalTo=".$idStores."&select=id_product";
+    $url = CurlController::api()."jobs?linkTo=id_worker_job&equalTo=".$idStores."&select=id_job";
     $productsid = CurlController::request($url,$method,$fields,$headers);
     if($productsid->status == 200){
         $totalProducts = $productsid->total;
     }else{
         $totalProducts = 0;
     }
-
-    $url = CurlController::api()."disputes?linkTo=id_store_dispute&equalTo=".$idStores."&select=answer_dispute&token=".$_SESSION["user"]->token_user;
+    $url = CurlController::api()."disputes?linkTo=id_worker_dispute&equalTo=".$idStores."&select=answer_dispute&token=".$_SESSION["user"]->token_user;
     $disputesid = CurlController::request($url,$method,$fields,$headers);
     $totalDisputes = 0;
     if($disputesid->status == 200){
@@ -36,8 +34,7 @@ if($store->status == 200){
             }
         }
     }
-
-    $url = CurlController::api()."messages?linkTo=id_store_message&equalTo=".$idStores."&select=answer_message&token=".$_SESSION["user"]->token_user;
+    $url = CurlController::api()."messages?linkTo=id_worker_message&equalTo=".$idStores."&select=answer_message&token=".$_SESSION["user"]->token_user;
     $messagesId = CurlController::request($url,$method,$fields,$headers);
     $totalMessages = 0;
     if($messagesId->status == 200){
@@ -48,14 +45,10 @@ if($store->status == 200){
         }
     }
 }
-
 ?>
 <aside class="ps-block--store-banner">
-
     <div class="ps-block__user">
-
         <div class="ps-block__user-avatar">
-
             <?php if ($_SESSION["user"]->method_user == "direct") : ?>
                 <?php if ($_SESSION["user"]->picture_user == "" || $_SESSION["user"]->picture_user == "NULL") : ?>
                     <img src="img/users/default/default.png" alt="<?php echo $_SESSION["user"]->username_user; ?>">
@@ -64,30 +57,19 @@ if($store->status == 200){
                 <?php endif; ?>
             <?php endif; ?>
             <div class="br-wrapper">
-
                 <button class="btn btn-primary btn-lg rounded-circle" data-toggle="modal" data-target="#changePhoto"><i class="fas fa-pencil-alt"></i></button>
-
             </div>
-
         </div>
-
         <div class="ps-block__user-content text-center text-lg-left">
-
             <h2 class="text-white"><?php echo $_SESSION["user"]->displayname_user; ?></h2>
-
             <p><i class="fas fa-user"></i> <?php echo $_SESSION["user"]->username_user; ?></p>
-
             <p><i class="fas fa-envelope"></i> <?php echo $_SESSION["user"]->email_user; ?></p>
-
             <?php if ($_SESSION["user"]->method_user == "direct") : ?>
                 <button class="btn btn-warning btn-lg" data-toggle="modal" data-target="#changePassword">Cambiar Password</button>
             <?php endif; ?>
-
         </div>
-
         <?php if($idStores != ""): ?>
         <div class="row ml-lg-auto pt-5">
-
             <div class="col-lg-3 col-6">
                 <div class="text-center">
                     <a href="<?php echo TemplateController::path(); ?>acount&my-store&orders">
@@ -96,7 +78,6 @@ if($store->status == 200){
                     </a>
                 </div>
             </div><!-- box /-->
-
             <div class="col-lg-3 col-6">
                 <div class="text-center">
                     <a href="<?php echo TemplateController::path(); ?>acount&my-store">
@@ -105,7 +86,6 @@ if($store->status == 200){
                     </a>
                 </div>
             </div><!-- box /-->
-
             <div class="col-lg-3 col-6">
                 <div class="text-center">
                     <a href="<?php echo TemplateController::path(); ?>acount&my-store&disputes">
@@ -114,7 +94,6 @@ if($store->status == 200){
                     </a>
                 </div>
             </div><!-- box /-->
-
             <div class="col-lg-3 col-6">
                 <div class="text-center">
                     <a href="<?php echo TemplateController::path(); ?>acount&my-store&messages">
@@ -125,23 +104,18 @@ if($store->status == 200){
             </div><!-- box /-->
         </div>
         <?php endif; ?>
-
     </div>
-
 </aside><!-- s -->
-
 <!-- ventana modal -->
 <!-- The Modal -->
 <div class="modal" id="changePassword">
     <div class="modal-dialog">
         <div class="modal-content">
-
             <!-- Modal Header -->
             <div class="modal-header">
                 <h4 class="modal-title">Nueva Contraseña</h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
-
             <!-- Modal body -->
             <div class="modal-body">
                 <form class="ps-form--account ps-tab-root needs-validation" novalidate method="post">
@@ -150,47 +124,36 @@ if($store->status == 200){
                         <div class="valid-feedback"></div>
                         <div class="invalid-feedback">El nuevo password es requerido</div>
                     </div>
-
                     <div class="form-group ">
-
                         <input class="form-control" type="password" id="passRep" name="repeatPassword" placeholder="Repeat Password..." required onchange="validatejs(event, 'repeatPass')">
                         <div class="valid-feedback"></div>
                         <div class="invalid-feedback">El password es requerido</div>
-
                     </div>
-
                     <div class="form-group submtit">
-
                         <?php
                         $newPass = new ControllerUser();
                         $newPass->actualiarContraseña();
                         ?>
-
                         <button type="submit" class="ps-btn ps-btn--fullwidth">Actualizar</button>
-
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
-
 <!-- The Modal Photo-->
 <div class="modal" id="changePhoto">
     <div class="modal-dialog">
         <div class="modal-content">
-
             <!-- Modal Header -->
             <div class="modal-header">
                 <h4 class="modal-title">Nueva Foto</h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
-
             <!-- Modal body -->
             <div class="modal-body">
                 <form class="ps-form--account ps-tab-root needs-validation" novalidate method="post" enctype="multipart/form-data">
                     <small class="helsmall-block small">Dimensiones: 200px x 200px | Tamaño: 2MB | Formato: JPG o PNG</small>
-                  
                     <div class="custom-file">
                         <input type="file" class="custom-file-input" id="customFile"  accept="image/*" maxSize="2000000" name="changePhoto" onchange="validateImageJs(event, 'changePhoto')" required>
                         <label for="customFile" class="custom-file-label">Buscar archivo</label>
@@ -198,16 +161,12 @@ if($store->status == 200){
                     <figure class="text-center py-3">
                         <img src="" class="img-fluid rounded-circle changePhoto" style="max-width: 150px;">
                     </figure>
-
                     <div class="form-group submtit">
-
                         <?php
                         $newphoto= new ControllerUser();
                         $newphoto->CambiarPhoto();
                         ?>
-
                         <button type="submit" class="ps-btn ps-btn--fullwidth">Actualizar</button>
-
                     </div>
                 </form>
             </div>

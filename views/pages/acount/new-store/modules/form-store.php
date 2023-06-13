@@ -3,11 +3,10 @@
      <div class="modal-header">
         <h4 class="modal-title text-center">2.- CREAR TIENDA</h4>
     </div>
-
     <div class="modal-body text-left p-5">
         <!-- name store -->
         <div class="form-group">
-            <label>Store name<sup class="text-danger">*</sup></label>
+            <label>Nombre de trabajador<sup class="text-danger">*</sup></label>
             <div class="form-group__content">
                 <input 
                 type="text"
@@ -15,6 +14,7 @@
                 name="nameStore"
                 placeholder="Nombre de tu tienda..." 
                 required 
+                value="<?php echo $_SESSION['user']->displayname_user ?>"
                 pattern="[0-9A-Za-zñÑáéíóúÁÉÍÓÚ ]{1,}" 
                 onchange="dataRepeat(event, 'store')">
                 <div class="valid-feedback"></div>
@@ -22,7 +22,7 @@
             </div>
         </div>
         <!-- url store -->
-        <div class="form-group">
+        <!-- <div class="form-group">
             <label>URL store<sup class="text-danger">*</sup></label>
             <div class="form-group__content">
                 <input 
@@ -35,10 +35,10 @@
                 <div class="valid-feedback"></div>
                 <div class="invalid-feedback">El nombre es requerido</div>
             </div>
-        </div>
+        </div> -->
         <!-- information -->
         <div class="form-group">
-            <label>Information Store<sup class="text-danger">*</sup></label>
+            <label>Information Del Trabajador<sup class="text-danger">*</sup></label>
             <div class="form-group__content">
                 <textarea  
                 class="form-control formStore"  
@@ -55,7 +55,7 @@
         </div>
         <!-- email -->
         <div class="form-group">
-            <label>Email Address<sup class="text-danger">*</sup></label>
+            <label>Email <sup class="text-danger">*</sup></label>
             <div class="form-group__content">
                 <input 
                 class="form-control formStore" 
@@ -68,20 +68,15 @@
                 <div class="valid-feedback"></div>
                 <div class="invalid-feedback">El email es requerido</div>
             </div>
-
         </div>
         <!-- country -->
         <div class="form-group">
-
-            <label>Store Country<sup class="text-danger">*</sup></label>
-
+            <label>Pais<sup class="text-danger">*</sup></label>
             <?php
                 $data = file_get_contents("views/json/ciudades.json");
                 $ciudades= json_decode($data, true);
             ?>
-
             <div class="form-group__content">
-
                 <select 
                     class="form-control select2 formStore" 
                     style="width: 100%;"
@@ -100,13 +95,11 @@
                 </select>
                 <div class="valid-feedback"></div>
                 <div class="invalid-feedback">El pais es requerido</div>
-
             </div>
-
         </div>
         <!-- city -->
         <div class="form-group">
-            <label>City Store<sup>*</sup></label>
+            <label>Ciudad o Estado<sup>*</sup></label>
             <div class="form-group__content">
                 <input 
                 class="form-control formStore" 
@@ -114,16 +107,50 @@
                 type="text"
                 name="cityStore"
                 pattern = "[A-Za-zñÑáéíóúÁÉÍÓÚ ]{1,}"
-                onchange="validatejs(event, 'text')" 
+                onchange="validatejs(event, 'text'), mapCreate()" 
                 value="<?php echo $_SESSION["user"]->city_user; ?>" 
                 required>
                 <div class="valid-feedback"></div>
                 <div class="invalid-feedback">La ciudad es requerida</div>
             </div>
         </div>
+         <!-- addres -->
+         <div class="form-group">
+            <label>Municipio o alcaldia<sup>*</sup></label>
+            <div class="form-group__content">
+                <input 
+                class="form-control formStore" 
+                type="text" 
+                id="municipioStore"
+                name="municipioStore"
+                pattern = '[-\\(\\)\\=\\%\\&\\$\\;\\_\\*\\"\\#\\?\\¿\\!\\¡\\:\\.\\,\\0-9a-zA-ZñÑáéíóúÁÉÍÓÚ ]{1,}'
+                onchange="validatejs(event, 'parrafo')"
+                value="<?php echo $_SESSION["user"]->address_user; ?>" 
+                required>
+                <div class="valid-feedback"></div>
+                <div class="invalid-feedback">El municipio es requerida</div>
+            </div>
+        </div>
+         <!-- addres -->
+         <div class="form-group">
+            <label>Calle<sup>*</sup></label>
+            <div class="form-group__content">
+                <input 
+                class="form-control formStore" 
+                type="text" 
+                id="addresStore"
+                name="addresStore"
+                pattern = '[-\\(\\)\\=\\%\\&\\$\\;\\_\\*\\"\\#\\?\\¿\\!\\¡\\:\\.\\,\\0-9a-zA-ZñÑáéíóúÁÉÍÓÚ ]{1,}'
+                onchange="validatejs(event, 'parrafo')"
+                value="<?php echo $_SESSION["user"]->address_user; ?>" 
+                required>
+                <div class="valid-feedback"></div>
+                <div class="invalid-feedback">La direccion es requerida</div>
+            </div>
+        </div>
         <!-- phone -->
         <div class="form-group">
-            <label>Phone Store<sup>*</sup></label>
+            <label>Telefono<sup>*</sup></label>
             <div class="form-group__content input-group">
                 <?php if($_SESSION["user"]->phone_user != null): ?>
                 <div class="input-group-append">
@@ -151,26 +178,9 @@
                 <div class="invalid-feedback">El telefono es requerido</div>
             </div>
         </div>
-        <!-- addres -->
-        <div class="form-group">
-            <label>Address Store<sup>*</sup></label>
-            <div class="form-group__content">
-                <input 
-                class="form-control formStore" 
-                type="text" 
-                id="addresStore"
-                name="addresStore"
-                pattern = '[-\\(\\)\\=\\%\\&\\$\\;\\_\\*\\"\\#\\?\\¿\\!\\¡\\:\\.\\,\\0-9a-zA-ZñÑáéíóúÁÉÍÓÚ ]{1,}'
-                onchange="validatejs(event, 'parrafo')"
-                value="<?php echo $_SESSION["user"]->address_user; ?>" 
-                required>
-                <div class="valid-feedback"></div>
-                <div class="invalid-feedback">La direccion es requerida</div>
-            </div>
-        </div>
         <!-- mapa -->
         <div class="form-group">
-            <label>Map Store<sup>*</sup><small> (Puedes mover el marcador para una mejor localizacion)</small></label>
+            <label>Mapa<sup>*</sup><small> (Puedes mover el marcador para una mejor localizacion)</small></label>
             <div id="myMap" style="height: 400px"></div>
             <input type="hidden" name="mapStore" id="mappp" class="formStore" <?php 
                 if(isset( $_SESSION["user"]->map_user)){
@@ -180,10 +190,10 @@
         </div>
         <!-- Logo -->
         <div class="form-group">
-            <label>Logo Store<sup class="text-danger">*</sup></label>
+            <label>Foto Principal<sup class="text-danger">*</sup></label>
             <div class="form-group__content">
                 <label class="pb-5" for="logoStore">
-                    <img src="img/stores/default/default-logo.jpg" class="img-fluid changeLogo" style="width:150px;">
+                    <img src="img/workers/default/default-logo.jpg" class="img-fluid changeLogo" style="width:150px;">
                 </label>
                 <div class="custom-file">
                     <input 
@@ -203,10 +213,10 @@
         </div>
         <!-- portada -->
         <div class="form-group">
-            <label>Portada Store<sup class="text-danger">*</sup></label>
+            <label>Portada<sup class="text-danger">*</sup></label>
             <div class="form-group__content">
                 <label class="pb-5" for="portStore">
-                    <img src="img/stores/default/default-cover.jpg" class="img-fluid changePort" style="width:100%;">
+                    <img src="img/workers/default/default-cover.jpg" class="img-fluid changePort" style="width:100%;">
                 </label>
                 <div class="custom-file">
                     <input 
@@ -226,7 +236,7 @@
         </div>
         <!-- redes -->
         <div class="form-group">
-            <label>Social Network<sup class="text-danger">*</sup></label>
+            <label>Redes Sociales<sup class="text-danger">*</sup></label>
             <!-- facebook -->
             <div class="form-group__content input-group mb-5">
                 <div class="input-group-append">
@@ -285,7 +295,6 @@
             </div>
         </div>
     </div>
-
     <div class="modal-footer">
         <button type="button" class="btn btn-warning btn-lg" onclick="validarStore()">Crear</button>
     </div>

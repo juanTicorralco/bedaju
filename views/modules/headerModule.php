@@ -154,8 +154,6 @@ if (isset($_SESSION["user"])) {
                                         $fields = array();
                                         $header = array();
                                         $result = CurlController::request($url, $method, $fields, $header)->result[0];
-                                        // echo "<pre>"; print_r($result); echo "</pre>";
-                                        // return;
                                     ?>
                                         <div class="ps-product--cart-mobile">
                                             <div class="ps-product__thumbnail mb-0">

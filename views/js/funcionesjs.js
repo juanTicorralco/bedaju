@@ -1762,71 +1762,7 @@ function urlCreate(e,urlStore){
   value = value.replace(/[ú]/g, "u");
 
   if(urlStore == "urlStore"){
-
     $('[name="'+urlStore+'"]').val(value);
-    
-    //mapa
-    let resultList =  document.getElementById('mappp').value;
-
-    console.log(resultList);
-
-    if(resultList == undefined || resultList == null || resultList == "" ){
-        resultList = [19.42847,-99.12766];
-    }else{
-      resultList = JSON.parse( resultList);
-    }
-
-    const title = "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
-    let myMap=0;
-
-    function mapa(resultList){
-
-      if(myMap!=0){
-        myMap.remove();
-      }
-
-    let finalMap= document.getElementById("mappp");
-    finalMap.setAttribute("value", resultList);
-
-    myMap= L.map('myMap').setView(resultList, 25);
-
-    L.tileLayer(title,{
-        maxZoom: 18,
-    }).addTo(myMap);
-
-    let iconMarker = L.icon({
-        iconUrl:'img/mark.png',
-        iconSize:[40,40],
-        iconAnchor: [20,20]
-    });
-
-    let marker=  L.marker(resultList, {
-      icon: iconMarker,
-      draggable: true
-    }).addTo(myMap);
-    marker.on("moveend", (e)=> { 
-      document.getElementById("mappp").setAttribute("value", [e.target._latlng.lat, e.target._latlng.lng ]);  
-    });
-    myMap.doubleClickZoom.disable();
-    }
-
-    mapa(resultList);
-
-    document.getElementById('addresStore').addEventListener('change', () => {
-        const pais= document.getElementById('countryStore').value.split("_")[0];
-        const city= document.getElementById('cityStore').value;
-        const adres= document.getElementById('addresStore').value;
-        const query = pais + ", " + city + ", " + adres;
-
-        fetch('https://nominatim.openstreetmap.org/search?format=json&polygon=1&addressdetails=1&q=' + query)
-            .then(result => result.json())
-            .then(parsedResult => {
-                resultList=[ parseFloat(parsedResult[0].lat) , parseFloat( parsedResult[0].lon)];
-                mapa(resultList);
-                switAlert("success", "Puedes mover el marcador para una mejor localizacion", null, null, 1500);
-            }).catch(error => switAlert("error", "Algun campo esta mal, intenta corregirlo para colocar tu direccion en el mapa...", null,null,null )
-            );
-    });
   }
 
   if(urlStore == "urlProduct"){
@@ -1834,6 +1770,69 @@ function urlCreate(e,urlStore){
   }
 
 }
+
+function mapCreate(){
+  //mapa
+  let resultList =  document.getElementById('mappp').value;
+  if(resultList == undefined || resultList == null || resultList == "" ){
+      resultList = [19.42847,-99.12766];
+  }else{
+    resultList = JSON.parse( resultList);
+  }
+  const title = "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
+  let myMap=0;
+
+  function mapa(resultList){
+    if(myMap!=0){
+      myMap.remove();
+    }
+
+   let finalMap= document.getElementById("mappp");
+   finalMap.setAttribute("value", resultList);
+   myMap= L.map('myMap').setView(resultList, 25);
+
+   L.tileLayer(title,{
+    maxZoom: 18,
+   }).addTo(myMap);
+
+   let iconMarker = L.icon({
+    iconUrl:'img/mark.png',
+    iconSize:[40,40],
+    iconAnchor: [20,20]
+   });
+
+   let marker=  L.marker(resultList, {
+     icon: iconMarker,
+     draggable: true
+   }).addTo(myMap);
+   marker.on("moveend", (e)=> { 
+     document.getElementById("mappp").setAttribute("value", [e.target._latlng.lat, e.target._latlng.lng ]);  
+   });
+   myMap.doubleClickZoom.disable();
+  }
+
+  mapa(resultList);
+
+  document.getElementById('addresStore').addEventListener('change', () => {
+    const pais= document.getElementById('countryStore').value.split("_")[0];
+    const city= document.getElementById('cityStore').value;
+    const adres= document.getElementById('addresStore').value;
+    const municipio= document.getElementById('municipioStore').value;
+    const query = pais + ", " + city + ", " + municipio + ", "+ adres;
+
+    fetch('https://nominatim.openstreetmap.org/search?format=json&polygon=1&addressdetails=1&q=' + query)
+    .then(result => result.json())
+    .then(parsedResult => {
+        resultList=[ parseFloat(parsedResult[0].lat) , parseFloat( parsedResult[0].lon)];
+        mapa(resultList);
+        switAlert("success", "Puedes mover el marcador para una mejor localizacion", null, null, 1500);
+    }).catch(error => switAlert("error", "Algun campo esta mal, intenta corregirlo para colocar tu direccion en el mapa...", null,null,null ));
+  });
+}
+
+
+
+
 
 function validarStore(){
   let formStore = $(".formStore");
