@@ -1,12 +1,12 @@
 <div class="tab-pane container fade" id="crearStore">
      <!-- Modal header -->
      <div class="modal-header">
-        <h4 class="modal-title text-center">2.- CREAR TIENDA</h4>
+        <h5 class="modal-title text-center">2.- DATOS COMO TRABAJADOR</h5>
     </div>
     <div class="modal-body text-left p-5">
         <!-- name store -->
         <div class="form-group">
-            <label>Nombre de trabajador<sup class="text-danger">*</sup></label>
+            <label>Nombre <small>(Como quieres que te encuentren tus clientes)</small><sup class="text-danger">*</sup></label>
             <div class="form-group__content">
                 <input 
                 type="text"
@@ -38,7 +38,7 @@
         </div> -->
         <!-- information -->
         <div class="form-group">
-            <label>Information Del Trabajador<sup class="text-danger">*</sup></label>
+            <label>Descripcion <small>(Agrega una descripcion sobre tu trayectoria y trabajos)</small><sup class="text-danger">*</sup></label>
             <div class="form-group__content">
                 <textarea  
                 class="form-control formStore"  
@@ -51,6 +51,46 @@
                 placeholder="Notes about your store, e.g. special notes for delivery."></textarea>
                 <div class="valid-feedback"></div>
                 <div class="invalid-feedback">La informacion es requerida</div>
+            </div>
+        </div>
+        <!-- Categories -->
+        <div class="form-group">
+            <label>Categoria de trabajador<sup class="text-danger">*</sup></label>
+            <?php
+                $url = CurlController::api()."categories?select=id_category,name_category,url_category";
+                $method= "GET";
+                $header= array();
+                $fields= array();
+                
+                $Categories= CurlController::request($url, $method, $header, $fields)->result;
+            ?>
+            <div class="form-group__content">
+                <select 
+                class="form-control"
+                name="categoryProduct"
+                onchange="changecategory(event)"
+                required>
+                    <option value="">Select Category</option>
+                    <?php foreach($Categories as $key => $value):?>
+                        <option value="<?php echo $value->id_category."_".$value->url_category; ?>"><?php echo $value->name_category; ?></option>
+                    <?php endforeach; ?>
+                </select>
+                <div class="valid-feedback"></div>
+                <div class="invalid-feedback">El nombre es requerido</div>
+            </div>
+        </div>
+        <!-- Subcategories -->
+        <div class="form-group subcategoryProduct" style="display: none ;">
+            <label>Subcategoria de trabajador<sup class="text-danger">*</sup></label>
+            <div class="form-group__content">
+                <select 
+                    class="form-control"
+                    name="subcategoryProduct"
+                    required>
+                    <option value="">Select Subcategory</option>
+                </select>
+                <div class="valid-feedback"></div>
+                <div class="invalid-feedback">El nombre es requerido</div>
             </div>
         </div>
         <!-- email -->
@@ -73,10 +113,10 @@
         <div class="form-group">
             <label>Pais<sup class="text-danger">*</sup></label>
             <?php
-                $data = file_get_contents("views/json/ciudades.json");
-                $ciudades= json_decode($data, true);
+                // $data = file_get_contents("views/json/ciudades.json");
+                // $ciudades= json_decode($data, true);
             ?>
-            <div class="form-group__content">
+            <!-- <div class="form-group__content">
                 <select 
                     class="form-control select2 formStore" 
                     style="width: 100%;"
@@ -84,17 +124,31 @@
                     onchange="changeContry(event)"
                     required
                     name="countryStore">
-                    <?php if($_SESSION["user"]->country_user != null): ?>
-                        <option value="<?php echo $_SESSION["user"]->country_user ?>_<?php echo explode("_",$_SESSION["user"]->phone_user)[0]?>"><?php echo $_SESSION["user"]->country_user ?></option>
-                    <?php else: ?>
+                    <?php //if($_SESSION["user"]->country_user != null): ?>
+                        <option value="<?php //echo $_SESSION["user"]->country_user ?>_<?php //echo explode("_",$_SESSION["user"]->phone_user)[0]?>"><?php //echo $_SESSION["user"]->country_user ?></option>
+                    <?php //else: ?>
                         <option value>Select country</option>
-                    <?php endif; ?>
-                    <?php foreach($ciudades as $key => $value):?>
-                        <option value="<?php echo $value["name"] ?>_<?php echo $value["dial_code"] ?>"><?php echo $value["name"] ?></option>
-                    <?php endforeach; ?>
+                    <?php //endif; ?>
+                    <?php //foreach($ciudades as $key => $value):?>
+                        <option value="<?php //echo $value["name"] ?>_<?php //echo $value["dial_code"] ?>"><?php //echo $value["name"] ?></option>
+                    <?php //endforeach; ?>
                 </select>
                 <div class="valid-feedback"></div>
                 <div class="invalid-feedback">El pais es requerido</div>
+            </div> -->
+            <div class="form-group__content">
+                <input 
+                class="form-control formStore" 
+                id="countryStore"
+                type="text"
+                name="countryStore"
+                pattern = "[A-Za-zñÑáéíóúÁÉÍÓÚ ]{1,}"
+                onchange="validatejs(event, 'text')" 
+                value="Mexico" 
+                readonly
+                required>
+                <div class="valid-feedback"></div>
+                <div class="invalid-feedback">La ciudad es requerida</div>
             </div>
         </div>
         <!-- city -->
@@ -161,7 +215,7 @@
                 ?>
                 <?php else: ?>
                     <div class="input-group-append">
-                    <span class="input-group-text dialCode">+--</span>
+                    <span class="input-group-text dialCode">+52</span>
                 </div>
                 <?php $phone="" ?>
                 <?php endif; ?>
@@ -188,6 +242,7 @@
                 }
                 ?> >
         </div>
+        <small>Esta informacion es requerida para que los clientes te encuentren en una zona en especifico</small>
         <!-- Logo -->
         <div class="form-group">
             <label>Foto Principal<sup class="text-danger">*</sup></label>

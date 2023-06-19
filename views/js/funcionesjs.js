@@ -1860,7 +1860,7 @@ function changecategory(event){
   $(".subcategoryProduct").show();
   let idCategory = event.target.value.split("_")[0];
   let settings = {
-    "url": $("#urlApi").val()+"subcategories?equalTo="+idCategory+"&linkTo=id_category_subcategory&select=id_subcategory,name_subcategory,title_list_subcategory",
+    "url": $("#urlApi").val()+"subcategories?equalTo="+idCategory+",show&linkTo=id_category_subcategory,show_subcategory&select=id_subcategory,name_subcategory,title_list_subcategory",
     "method":"GET",
     "timeout":0,
   };

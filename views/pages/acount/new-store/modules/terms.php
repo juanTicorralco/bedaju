@@ -1,7 +1,7 @@
 <div class="tab-pane container fade pt-5" id="terms">
     <!-- Modal header -->
     <div class="modal-header">
-        <h4 class="modal-title text-center">1.- TERMINOS Y CONDICIONES</h4>
+        <h5 class="modal-title text-center">1.- TERMINOS Y CONDICIONES</h5>
     </div>
     <!-- Modal body -->
     <div class="modal-body text-left p-5">

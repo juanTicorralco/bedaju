@@ -117,7 +117,7 @@ class TemplateController
                 mkdir($directory, 0755);
             }
             // eliminar todos los archivos que existan en ese directorio
-            if($folder != "img/stores" && $folder != "img/products"){
+            if($folder != "img/stores" && $folder != "img/products" && $folder != "img/users"){
                 $files = glob($directory . "/*");
                 foreach ($files as $file) {
                     unlink($file);
