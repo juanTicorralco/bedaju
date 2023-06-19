@@ -103,17 +103,14 @@ class ControllerVendor{
                                     "date_created_worker" => $dateCreated
                                 );
 
-                                echo '<pre>';  print_r($dataStore); echo '</pre>';
-
                                $url = CurlController::api()."workers?token=".$_SESSION["user"]->token_user;
                                $method = "POST";
                                $fields = $dataStore;
                                $header = array(
                                 "Content-Type" => "application/x-www-form-urlencoded"
                                 );
-                                echo '<pre>';  print_r($url); echo '</pre>';
                                 $saveStore = CurlController::request($url,$method,$fields,$header);
-                                echo '<pre>';  print_r($saveStore); echo '</pre>';
+                               
                                 if($saveStore->status == "200"){
                                     $saveProduct = ControllerVendor::newProduct($saveStore->result->idlast, explode("_", $_POST["categoryProduct"])[0], explode("_", $_POST["subcategoryProduct"])[0], $URLworker);
                                 }else{

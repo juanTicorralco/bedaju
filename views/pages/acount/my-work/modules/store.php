@@ -1,35 +1,28 @@
 <?php
-    $select = "id_store,name_store,url_store,logo_store,cover_store,about_store,abstract_store,email_store,country_store,city_store,address_store,phone_store,socialnetwork_store,map_store,reviews_product,approval_product";
-    $url = CurlController::api()."relations?rel=products,stores&type=product,store&linkTo=id_user_store&equalTo=".$_SESSION["user"]->id_user."&select=".$select;
+    $select = "id_worker,id_category_worker,id_subcategory_worker,specialties_worker,municipio_worker,times_hired_worker,times_budgeted_worker,name_worker,url_worker,logo_worker,cover_worker,about_worker,abstract_worker,email_worker,country_worker,city_worker,address_worker,phone_worker,socialnetwork_worker,map_worker,reviews_worker,approval_job";
+    $url = CurlController::api()."relations?rel=jobs,users,workers&type=job,user,worker&linkTo=id_user_worker&equalTo=".$_SESSION["user"]->id_user."&select=".$select;
     $method = "GET";
     $fields = array();
     $headers = array();
     $storeResult = CurlController::request($url,$method,$fields,$headers)->result;
     $reviews = 0;
     $totalreviews = 0;
+    // echo '<pre>';  print_r($storeResult); echo '</pre>';
+    // return;
 ?>
 <div class="ps-section__left">
-
     <div class="ps-block--vendor">
-
         <div class="ps-block__thumbnail">
-
-            <img src="img/stores/<?php echo $storeResult[0]->url_store; ?>/<?php echo $storeResult[0]->logo_store; ?>" alt="<?php echo $storeResult[0]->name_store; ?>">
-
+            <img class="rounded-circle" src="img/users/<?php echo $storeResult[0]->url_worker?>/<?php echo $storeResult[0]->logo_worker; ?>" alt="<?php echo $storeResult[0]->name_worker; ?>">
         </div>
-
         <div class="ps-block__container">
-
             <div class="ps-block__header">
-
-                <h4><?php echo $storeResult[0]->name_store; ?></h4>
-
+                <h4><?php echo $storeResult[0]->name_worker; ?></h4>
                 <div class="br-wrapper br-theme-fontawesome-stars">
-                    
                     <?php
                         foreach($storeResult as $item){
-                            if($item->reviews_product != null){
-                                foreach(json_decode($item->reviews_product, true) as $key => $value){
+                            if($item->reviews_worker != null){
+                                foreach(json_decode($item->reviews_worker, true) as $key => $value){
                                     $reviews += $value["review"];
                                     $totalreviews++;
                                 }
@@ -39,10 +32,7 @@
                             $reviews = round($reviews/$totalreviews);
                         }
                     ?>
-
-
                     <select class="ps-rating" data-read-only="true" style="display: none;">
-
                        <?php
                         if($reviews > 0){
                             for($i = 0; $i < 5; $i++){
@@ -59,82 +49,65 @@
                             }
                         }
                        ?>
-
                     </select>
-
                 </div>
-
-                <p><strong><?php echo ($reviews*100)/5; ?>% Positive</strong> (<?php echo $totalreviews; ?> rating)</p>
-
+                <p><strong><?php echo ($reviews*100)/5; ?>% Positivo</strong> <small class="text-dark">(<?php echo $totalreviews; ?> rating)</small></p>
+                <p><strong>Contratado: </strong> <small class="text-dark"><?php echo $storeResult[0]->times_hired_worker;?> <small>(veces)</small></small></p>
+                <p><strong>Cotizaciones: </strong> <small class="text-dark"><?php echo $storeResult[0]->times_budgeted_worker;?> <small>(veces)</small></small></p>
             </div><span class="ps-block__divider"></span>
-
             <div class="ps-block__content">
-
-                <p><strong><?php echo $storeResult[0]->name_store; ?></strong> <?php echo $storeResult[0]->abstract_store; ?></p>
-
+                <p><strong><?php echo $storeResult[0]->name_worker; ?></strong> <small class="text-dark"><?php echo $storeResult[0]->about_worker; ?></small></p>
+                <?php if($storeResult[0]->specialties_worker != null || $storeResult[0]->specialties_worker !=""): ?>
+                <ul class="ps-product__desc mb-5">
+                    <?php foreach (json_decode($storeResult[0]->specialties_worker) as $key2 => $value2) : ?>
+                        <li> <?php echo $value2; ?> </li>
+                    <?php endforeach; ?>
+                </ul>
+                <?php endif; ?>
                 <span class="ps-block__divider"></span>
-
-                <p><strong>Address</strong> <?php echo $storeResult[0]->country_store . ", " . $storeResult[0]->city_store . ", " . $storeResult[0]->address_store; ?></p>
-
+                <p><strong>Direccion:</strong> <small class="text-dark"> <?php echo $storeResult[0]->country_worker . ", " . $storeResult[0]->city_worker . ", ". $storeResult[0]->municipio_worker . ", " . $storeResult[0]->address_worker; ?></small></p>
                 <!-- mandar el map -->
-                <?php if(isset( $storeResult[0]->map_store) && $storeResult[0]->map_store != null):?>
+                <?php if(isset( $storeResult[0]->map_worker) && $storeResult[0]->map_worker != null):?>
                     <p><strong>Mapa</strong></p>
-
                     <div id="myMap" class="mb-5" style="height: 400px"></div>
                     <div id="mappp" class="mappp mb-5"  style="display: none" <?php 
-                        if(isset( $storeResult[0]->map_store) && $storeResult[0]->map_store != null){
-                            echo  'data-value =' . $storeResult[0]->map_store;
+                        if(isset( $storeResult[0]->map_worker) && $storeResult[0]->map_worker != null){
+                            echo  'data-value =' . $storeResult[0]->map_worker;
                         }
                         ?>>
                     </div>
                 <?php endif;?>
-                   
-                <?php if($storeResult[0]->socialnetwork_store != null): ?>
+                <?php if($storeResult[0]->socialnetwork_worker != null): ?>
                 <figure>
-
-                    <figcaption>Follow us on social</figcaption>
-
+                    <figcaption>Redes sociales</figcaption>
                     <ul class="ps-list--social-color">
-
-                        <?php foreach(json_decode( $storeResult[0]->socialnetwork_store, true) as $key => $value): ?>
+                        <?php foreach(json_decode( $storeResult[0]->socialnetwork_worker, true) as $key => $value): ?>
                             <li>
                                 <a target="_blank" class="<?php  echo array_keys($value)[0]; ?>" href="<?php  echo $value[array_keys($value)[0]]; ?>">
                                     <i class="fab fa-<?php  echo array_keys($value)[0]; ?>"></i></a>
                             </li>
                         <?php endforeach;?>
-
                     </ul>
-
                 </figure>
                 <?php endif; ?>
-
             </div>
-
             <div class="ps-block__footer">
-
-                <p>Call us directly<strong><small><?php echo "(".explode("_", $storeResult[0]->phone_store)[0].")"." ".explode("_", $storeResult[0]->phone_store)[1]; ?></small></strong></p>
-
-                <p>or Or if you have any question <strong><small><?php echo $storeResult[0]->email_store; ?></small></strong></p>
-
+                <p class="text-dark">Numero telefonico<strong><small><?php echo "(".explode("_", $storeResult[0]->phone_worker)[0].")"." ".explode("_", $storeResult[0]->phone_worker)[1]; ?></small></strong></p>
+                <p class="text-dark">Email <strong><small><?php echo $storeResult[0]->email_worker; ?></small></strong></p>
                 <a class="ps-btn ps-btn--fullwidth" data-toggle="modal" href="#editStore" onclick="dispararmapa()">Edit</a>
-
             </div>
-
         </div>
-
     </div>
-
 </div><!-- End Vendor Profile -->
-
 <!-- modal de editar -->
 <div class="modal" id="editStore">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <form class="needs-validation" novalidate method="POST" enctype="multipart/form-data">
-                <input type="hidden" value="<?php echo $storeResult[0]->id_store; ?>" name="idStore">
+                <input type="hidden" value="<?php echo $storeResult[0]->id_worker; ?>" name="idStore">
                 <!-- header -->
                 <div class="modal-header">
-                    <h5 class="modal-title text-center">Edit Store</h5>
+                    <h5 class="modal-title text-center">Editar Trabajador</h5>
                     <button class="close btn btn-danger text-black" type="button" data-dismiss="modal">&times;</button>
                 </div>
                 <!-- body -->

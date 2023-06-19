@@ -1,4 +1,4 @@
-if(window.location == "http://wesharp.com/checkout"){
+if(window.location == "http://bedaju.com/checkout"){
     let resultList =  document.getElementById('mappp').dataset.value;
 
     if(resultList == undefined){
@@ -60,15 +60,15 @@ if(window.location == "http://wesharp.com/checkout"){
     });
 }
 
-if( window.location == "http://wesharp.com/acount&my-store" ||
-    window.location == "http://wesharp.com/acount&my-store#vendor-store" ||
-    window.location == "http://wesharp.com/acount&my-store?product=new#vendor-store" ||
-    window.location == "http://wesharp.com/acount&my-store?product=edit#vendor-store"||
-    window.location == "http://wesharp.com/acount&my-store?product=new" ||
-    window.location == "http://wesharp.com/acount&my-store?product=edit" ||
-    window.location == "http://wesharp.com/acount&my-store&orders" ||
-    window.location == "http://wesharp.com/acount&my-store&disputes" ||
-    window.location == "http://wesharp.com/acount&my-store&messages"
+if( window.location == "http://bedaju.com/acount&my-work" ||
+    window.location == "http://bedaju.com/acount&my-work#vendor-store" ||
+    window.location == "http://bedaju.com/acount&my-work?product=new#vendor-store" ||
+    window.location == "http://bedaju.com/acount&my-work?product=edit#vendor-store"||
+    window.location == "http://bedaju.com/acount&my-work?product=new" ||
+    window.location == "http://bedaju.com/acount&my-work?product=edit" ||
+    window.location == "http://bedaju.com/acount&my-work&orders" ||
+    window.location == "http://bedaju.com/acount&my-work&disputes" ||
+    window.location == "http://bedaju.com/acount&my-work&messages"
     ){
 
     let resultList =  document.getElementById('mappp').dataset.value;

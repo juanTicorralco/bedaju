@@ -9,7 +9,7 @@ $store = CurlController::request($url,$method,$fields,$headers);
 // echo "<pre>"; print_r($store); echo "</pre>";
 // return;
 if($store->status == 200){
-    $idStores = $store->result[0]->id_store;
+    $idStores = $store->result[0]->id_worker;
     $url = CurlController::api()."orders?linkTo=id_worker_order,status_order&equalTo=".$idStores.",pending&select=id_order&token=".$_SESSION["user"]->token_user;
     $ordersid = CurlController::request($url,$method,$fields,$headers);
     if($ordersid->status == 200){
